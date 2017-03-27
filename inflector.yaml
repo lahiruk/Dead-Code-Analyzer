@@ -1,8 +1,8 @@
-controllerPackage: io.swagger.samples.inflector.springboot.controllers
-modelPackage: io.swagger.samples.inflector.springboot.models
+controllerPackage: lk.devfactory.controllers
+modelPackage: lk.devfactory.models
 swaggerUrl: ./src/main/swagger/swagger.yaml
 modelMappings:
-  Pet: io.swagger.samples.inflector.springboot.models.Pet
+  Pet: lk.devfactory.models.Pet
 # loads all by default, or pick and choose
 entityProcessors:
   - json

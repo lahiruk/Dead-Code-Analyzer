@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package io.swagger.samples.inflector.springboot.models;
+package lk.devfactory.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;

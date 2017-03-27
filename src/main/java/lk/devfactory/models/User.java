@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package io.swagger.samples.inflector.springboot.models;
+package lk.devfactory.models;
 
 public class User {
     private Long id;
