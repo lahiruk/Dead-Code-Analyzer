@@ -3,7 +3,7 @@ server:
     servlet-path: /
 spring:
   application:
-    name: Dead-Code-Analyzer
+    name: dead-code-analyzer
   jersey:
     application-path: /api
   jackson:
