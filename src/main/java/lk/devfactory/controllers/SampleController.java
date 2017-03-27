@@ -31,8 +31,15 @@ public class SampleController {
                                     .entity(pet);
     }
 
+    public ResponseContext updatePet(RequestContext request, Pet body) {
+    	System.out.println("######test update#######");
+        return new ResponseContext()
+                .status(Status.OK)
+                .entity(body);
+    }
 
     public ResponseContext addPet(RequestContext request, Pet body) {
+    	System.out.println("######test add#######");
         return new ResponseContext()
                 .status(Status.OK)
                 .entity(body);

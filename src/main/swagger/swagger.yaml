@@ -54,14 +54,15 @@ paths:
       tags:
         - pet
       summary: Update an existing pet
+      x-swagger-router-controller: SampleController
       description: ""
       operationId: updatePet
       consumes:
         - application/json
-        - application/xml
+#        - application/xml
       produces:
         - application/xml
-        - application/json
+#        - application/json
       parameters:
         - in: body
           name: body

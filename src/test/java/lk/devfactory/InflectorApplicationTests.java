@@ -1,4 +1,4 @@
-package io.swagger.samples.inflector.springboot;
+package lk.devfactory;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
