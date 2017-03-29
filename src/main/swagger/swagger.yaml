@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  description: "This is a sample server to submit you java project to analyse dead code."
+  description: "This is a simple service to submit you java project to analyse dead code using SciTool."
   version: 1.0.0
   title: Swagger Dead Code Analizer YAML
   termsOfService: "http://dead.io/terms/"
@@ -12,7 +12,7 @@ info:
 basePath: /v1
 tags:
   - name: repository
-    description: Everything about your Project Repo's to analysed Dead Code
+    description: Everything about your Project Repo's Dead Code
 schemes:
   - http
 paths:
@@ -29,13 +29,17 @@ paths:
       produces:
         - application/json
       parameters:
-        - in: body
-          url: body
+        - name: body
+          in: body
           description: Repository object that needs to be added to the analyse
           required: false
           schema:
             $ref: "#/definitions/Repository"
       responses:
+        "200":
+          description: successful operation
+          schema:
+            $ref: "#/definitions/Repository"
         "405":
           description: Invalid input
   /repository/all:
@@ -56,8 +60,8 @@ paths:
             type: array
             items:
               $ref: "#/definitions/Repository"
-        "400":
-          description: Invalid tag value
+        "404":
+          description: Repositories not found
   "/repository/{repositoryId}":
     get:
       tags:
@@ -103,7 +107,7 @@ definitions:
         example: https://github.com/owner/project.git
       status:
         type: string
-        description: Repository status in the store
+        description: Repository status
         enum:
           - available
           - pending
@@ -172,5 +176,5 @@ definitions:
         type: integer
         format: int64                  
 externalDocs:
-  description: Find out more about Swagger
-  url: "http://swagger.io"
+  description: Find out more about SciTool
+  url: "https://scitools.com/"
