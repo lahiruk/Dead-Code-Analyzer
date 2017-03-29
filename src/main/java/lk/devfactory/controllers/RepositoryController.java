@@ -15,7 +15,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 @Component
-public class SampleController {
+public class RepositoryController {
 
     Faker faker = new Faker();
 

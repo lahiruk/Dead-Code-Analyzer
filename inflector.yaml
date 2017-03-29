@@ -1,6 +1,6 @@
 controllerPackage: lk.devfactory.controllers
 modelPackage: lk.devfactory.models
-swaggerUrl: ./src/main/swagger/swagger.yaml
+swaggerUrl: swagger.yaml
 modelMappings:
   Pet: lk.devfactory.models.Pet
 # loads all by default, or pick and choose

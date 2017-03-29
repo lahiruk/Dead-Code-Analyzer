@@ -1,6 +1,6 @@
 buildscript {
 	ext {
-		springBootVersion = '1.4.2.RELEASE'
+		springBootVersion = '1.5.2.RELEASE'
 	}
 	repositories {
         jcenter()
@@ -35,6 +35,15 @@ repositories {
 	mavenCentral()
 }
 
+sourceSets {
+    main {
+        resources {
+            srcDirs "src/main/swagger","."
+            include "*.yaml"
+        }
+    }
+}
+
 springBoot  {
     buildInfo()
 }
@@ -49,8 +58,12 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
     from javadoc.destinationDir
 }
 
+docker {
+    maintainer = 'lkdevfactory <lahirukarunatilake@yahoo.com>'
+}
+
 task buildDocker(type: Docker, dependsOn: build) {
-  push = true
+ //push = true
   applicationName = jar.baseName
   dockerfile = file('src/main/docker/Dockerfile')
   doFirst {
@@ -67,7 +80,7 @@ artifacts {
 }
 
 dependencies {
-	compile('io.swagger:swagger-inflector:1.0.10')
+	compile('io.swagger:swagger-inflector:1.0.13-SNAPSHOT')
     compile('com.github.javafaker:javafaker:0.11') {
         exclude group: 'com.github.bmoliveira'
     }

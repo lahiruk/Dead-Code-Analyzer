@@ -31,7 +31,7 @@ paths:
       tags:
         - pet
       summary: Add a new pet to the store
-      x-swagger-router-controller: SampleController
+      x-swagger-router-controller: RepositoryController
       description: ""
       operationId: addPet
       consumes:
@@ -54,7 +54,7 @@ paths:
       tags:
         - pet
       summary: Update an existing pet
-      x-swagger-router-controller: SampleController
+      x-swagger-router-controller: RepositoryController
       description: ""
       operationId: updatePet
       consumes:
@@ -148,7 +148,7 @@ paths:
       tags:
         - pet
       summary: Find pet by ID
-      x-swagger-router-controller: SampleController
+      x-swagger-router-controller: RepositoryController
       description: Returns a single pet
       operationId: getPetById
       consumes:
@@ -234,7 +234,7 @@ paths:
       tags:
         - pet
       summary: uploads an image
-      x-swagger-router-controller: SampleController
+      x-swagger-router-controller: RepositoryController
       description: ""
       operationId: uploadFile
       consumes:
