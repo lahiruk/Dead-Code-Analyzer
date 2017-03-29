@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Function {
+public class Function extends Entity{
 	
 	String name;
 	

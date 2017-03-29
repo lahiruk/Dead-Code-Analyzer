@@ -22,22 +22,32 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 
-public class DeadCode{
+public class DeadCode extends Entity{
 
-    private String className;
+    private String name;
     
     private List<GlobalVariable> globalVariables;
     
     private List<Function> functions;
 
     @JsonProperty
-    public String getClassName() {
-        return className;
+    public String getName() {
+        return name;
     }
 
-    public void setClassName(String name) {
-        this.className = name;
+    public void setName(String name) {
+        this.name = name;
     }
+    
+	@Override
+	public int getLineNo() {
+		return 0; //Class does not have a lineNo
+	}
+
+	@Override
+	public int getColumnNo() {
+		return 0;// class does not have a columnNo
+	}
 
     @JsonProperty
 	public List<GlobalVariable> getGlobalVariables() {
@@ -58,16 +68,16 @@ public class DeadCode{
 	}
 
 	public DeadCode() {
-		this.className ="lk.devfactory.Test.class";
+		this.name ="lk.devfactory.Test.class";
 		this.globalVariables = new ArrayList<GlobalVariable>();
 		this.globalVariables.add(new GlobalVariable());
 		this.functions = new ArrayList<Function>();
 		this.functions.add(new Function());
     }
 
-	public DeadCode(String className, List<GlobalVariable> globalVariables, List<Function> functions) {
+	public DeadCode(String name, List<GlobalVariable> globalVariables, List<Function> functions) {
 		super();
-		this.className = className;
+		this.name = name;
 		this.globalVariables = globalVariables;
 		this.functions = functions;
 	}

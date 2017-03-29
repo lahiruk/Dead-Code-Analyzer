@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.util.FileCopyUtils;
 
 import lk.devfactory.ds.RepositoryDS;
+import lk.devfactory.models.DeadCode;
 import lk.devfactory.models.Repository;
 import lk.devfactory.repository.DeadCodeDO;
 import lk.devfactory.repository.RepositoryDO;
@@ -20,13 +22,12 @@ import lk.devfactory.store.impl.UUID;
 import lk.devfactory.utility.GitUrlProcessor;
 import lk.devfactory.utility.UnzipUtility;
 
-//TODO Logger setting.Fix the exception throwing
+//TODO Logger setting.Fix the exception throwing. Fix the prjPath.remove DS setter.
 @org.springframework.stereotype.Repository
 public class GitZipJavaProjectRepositoryDO implements RepositoryDO {
 
-	private static final String PREV_FOLDER = ".."+File.separator;
 	private static final String SRC_FOLDER = "src";
-	public static final String projPath = "/Users/lahiru/Development/workspace/SciToolPOC";
+	public static final String projPath = "/Users/lahiru/tmp";
 	public static final String UDB_PROJECT_NAME = "und_project.udb";
 	public static final String DOWNLOAD_PROJECT_SUFFIX = "_download.zip";
 	
@@ -37,6 +38,10 @@ public class GitZipJavaProjectRepositoryDO implements RepositoryDO {
 	@Autowired
 	DeadCodeDO deadCodeDO;
 	
+	public void setDeadCodeDO(DeadCodeDO deadCodeDO) {
+		this.deadCodeDO = deadCodeDO;
+	}
+
 	@Override
 	//TODO replace Repository.getID to UUID type. Then reomve this additional UUID parameter
 	public Repository add(UUID id, Repository repository) {
@@ -44,8 +49,9 @@ public class GitZipJavaProjectRepositoryDO implements RepositoryDO {
 		extract(id.toString());
 		renameProjectFolder(id.toString(),repository.getUrl());
 		buildUdb(id.toString());
-		deadCodeDO.analyse(id, repository);
-		return null;
+		List<DeadCode> deadCodeList = deadCodeDO.analyse(id, repository);
+		repository.setDeadCode(deadCodeList);
+		return repository;
 	}
 
 	@Override
@@ -61,12 +67,13 @@ public class GitZipJavaProjectRepositoryDO implements RepositoryDO {
 	}
 	
 	private void download(String repoId, String gitUrl) {
+		String absPath = projPath + File.separator;
 		try {
 			URL url = new URL(GitUrlProcessor.convertToZipDownloadUrl(gitUrl));
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 			connection.setRequestMethod("GET");
 			InputStream in = connection.getInputStream();
-			FileOutputStream out = new FileOutputStream(PREV_FOLDER + repoId + DOWNLOAD_PROJECT_SUFFIX);
+			FileOutputStream out = new FileOutputStream(absPath + repoId + DOWNLOAD_PROJECT_SUFFIX);
 			FileCopyUtils.copy(in, out);
 			out.close();
 
@@ -76,9 +83,10 @@ public class GitZipJavaProjectRepositoryDO implements RepositoryDO {
 	}
 
 	private void extract(String repoId) {
+		String absPath = projPath + File.separator;
 		UnzipUtility unzipUtility = new UnzipUtility();
 		try {
-			unzipUtility.unzip(PREV_FOLDER + repoId + DOWNLOAD_PROJECT_SUFFIX, PREV_FOLDER);
+			unzipUtility.unzip(absPath + repoId + DOWNLOAD_PROJECT_SUFFIX, projPath);
 		} catch (IOException e) {
 			System.out.println("Failed extract zip file:" + e.getMessage());
 		}
@@ -86,14 +94,16 @@ public class GitZipJavaProjectRepositoryDO implements RepositoryDO {
 	}
 	
 	private void renameProjectFolder(String repoId, String gitUrl) {
-		File file = new File(PREV_FOLDER+GitUrlProcessor.getProjectName(gitUrl)+"-master");
-		file.renameTo(new File(PREV_FOLDER+repoId));
+		String absPath = projPath + File.separator;
+		File file = new File(absPath+GitUrlProcessor.getProjectName(gitUrl)+"-master");
+		file.renameTo(new File(absPath+repoId));
 	}
 	
 	private void buildUdb(String repoId) {
-		String absPath = projPath + File.separator + repoId;
-		String cmd = "und -db " + absPath + File.separator + UDB_PROJECT_NAME + " create -languages Java " + "add " + absPath
-				+File.separator+SRC_FOLDER+" settings -javaVersion Java8 analyze";
+		String absPath = projPath + File.separator + repoId + File.separator;
+		String cmd = "/Applications/Understand.app/Contents/MacOS/und -db " 
+				+ absPath + UDB_PROJECT_NAME + " create -languages Java " + "add " + absPath
+				+SRC_FOLDER+" settings -javaVersion Java8 analyze";
 		System.out.println(cmd);
 		try {
 			Process p = Runtime.getRuntime().exec(cmd);

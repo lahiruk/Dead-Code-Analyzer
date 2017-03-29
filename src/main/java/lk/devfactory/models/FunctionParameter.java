@@ -2,7 +2,7 @@ package lk.devfactory.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class FunctionParameter {
+public class FunctionParameter extends Entity{
 	
 	String name;
 	

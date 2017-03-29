@@ -1,5 +1,7 @@
 package lk.devfactory.ds.impl;
 
+import java.util.stream.Stream;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -11,7 +13,7 @@ import lk.devfactory.store.impl.UUID;
 
 @Component
 @Qualifier("repositoryCacheDS")
-public class RepositotyCacheDS implements RepositoryDS {
+public class RepositotyCacheDS implements RepositoryDS<UUID,Repository> {
 	
 	@Autowired()
 	@Qualifier("repositoryCache")
@@ -20,4 +22,24 @@ public class RepositotyCacheDS implements RepositoryDS {
 	@Autowired
 	@Qualifier("gitUrlCache")
 	Cache<String, UUID> gitUrlCache;
+
+	@Override
+	public void create(UUID id, Repository entity) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Repository findById(UUID id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Stream<Repository> findAll() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
 }
