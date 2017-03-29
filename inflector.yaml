@@ -2,7 +2,7 @@ controllerPackage: lk.devfactory.controllers
 modelPackage: lk.devfactory.models
 swaggerUrl: swagger.yaml
 modelMappings:
-  Pet: lk.devfactory.models.Pet
+  Pet: lk.devfactory.models.Repository
 # loads all by default, or pick and choose
 entityProcessors:
   - json

@@ -16,24 +16,18 @@
 
 package lk.devfactory.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModelProperty;
-
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Pet {
+import io.swagger.annotations.ApiModelProperty;
+
+
+public class Repository {
     private long id;
-    private Category category;
-    private String name;
-    private List<String> photoUrls = new ArrayList<String>();
-    private List<Tag> tags = new ArrayList<Tag>();
+    private String url;
+    private List<DeadCode> deadCode;
     private String status;
     private OffsetDateTime created = OffsetDateTime.now();
 
@@ -56,43 +50,24 @@ public class Pet {
     }
 
     @JsonProperty
-    public Category getCategory() {
-        return category;
+    public String getUrl() {
+        return url;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setUrl(String name) {
+        this.url = name;
     }
 
-    @JsonProperty
-    public String getName() {
-        return name;
-    }
+    public List<DeadCode> getDeadCode() {
+		return deadCode;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setDeadCode(List<DeadCode> deadCode) {
+		this.deadCode = deadCode;
+	}
 
-    @JsonProperty
-    public List<String> getPhotoUrls() {
-        return photoUrls;
-    }
-
-    public void setPhotoUrls(List<String> photoUrls) {
-        this.photoUrls = photoUrls;
-    }
-
-    @JsonProperty("tags")
-    public List<Tag> getTags() {
-        return tags;
-    }
-
-    public void setTags(List<Tag> tags) {
-        this.tags = tags;
-    }
-
-    @JsonProperty("status")
-    @ApiModelProperty(value = "pet status in the store", allowableValues = "available,pending,sold")
+	@JsonProperty("status")
+    @ApiModelProperty(value = "Repository status in the store", allowableValues = "available,pending,sold")
     public String getStatus() {
         return status;
     }
