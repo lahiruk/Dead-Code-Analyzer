@@ -38,9 +38,7 @@ public class GlobalVariable extends Entity{
 	}
 
 	public GlobalVariable() {
-		this.name = "Global1";
-		this.lineNo = 10;
-		this.columnNo = 15;
+
 	}
 	
 	public GlobalVariable(String name, int lineNo, int columnNo) {

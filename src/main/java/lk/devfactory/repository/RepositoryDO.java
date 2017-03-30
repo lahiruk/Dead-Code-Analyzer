@@ -9,4 +9,5 @@ public interface RepositoryDO {
 	public Repository add(UUID id, Repository repository);
 	public Stream<Repository> findAll();
 	public Repository findById(UUID id);
+	public void remove(UUID id);
 }

@@ -27,7 +27,8 @@ import lk.devfactory.utility.UnzipUtility;
 public class GitZipJavaProjectRepositoryDO implements RepositoryDO {
 
 	private static final String SRC_FOLDER = "src";
-	public static final String projPath = "/Users/lahiru/tmp";
+	public static final String TMP_PATH = System.getProperty("tmpPath","/tmp");
+	public static final String DIST = System.getProperty("distribution","linux64");
 	public static final String UDB_PROJECT_NAME = "und_project.udb";
 	public static final String DOWNLOAD_PROJECT_SUFFIX = "_download.zip";
 	
@@ -56,6 +57,7 @@ public class GitZipJavaProjectRepositoryDO implements RepositoryDO {
 		if (!existing) {
 			repository.setStatus("downloading");
 			download(id.toString(), repository.getUrl());
+			//TODO Handle no repository found and propergate the exception back from here
 			//TODO Change the default status list in swagger enum
 			extract(id.toString());
 			renameProjectFolder(id.toString(),repository.getUrl());
@@ -64,7 +66,7 @@ public class GitZipJavaProjectRepositoryDO implements RepositoryDO {
 			List<DeadCode> deadCodeList = deadCodeDO.analyse(id, repository);
 			repository.setStatus("completed");
 			repository.setDeadCode(deadCodeList);
-			
+			repository.setId(id.toString());
 		} else {
 			repository = repositoryDS.findById(id);
 		}
@@ -81,8 +83,13 @@ public class GitZipJavaProjectRepositoryDO implements RepositoryDO {
 		return repositoryDS.findById(id);
 	}
 	
+	@Override
+	public void remove(UUID id) {
+		repositoryDS.remove(id);
+	}
+	
 	private void download(String repoId, String gitUrl) {
-		String absPath = projPath + File.separator;
+		String absPath = TMP_PATH + File.separator;
 		try {
 			URL url = new URL(GitUrlProcessor.convertToZipDownloadUrl(gitUrl));
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -98,10 +105,10 @@ public class GitZipJavaProjectRepositoryDO implements RepositoryDO {
 	}
 
 	private void extract(String repoId) {
-		String absPath = projPath + File.separator;
+		String absPath = TMP_PATH + File.separator;
 		UnzipUtility unzipUtility = new UnzipUtility();
 		try {
-			unzipUtility.unzip(absPath + repoId + DOWNLOAD_PROJECT_SUFFIX, projPath);
+			unzipUtility.unzip(absPath + repoId + DOWNLOAD_PROJECT_SUFFIX, TMP_PATH);
 		} catch (IOException e) {
 			System.out.println("Failed extract zip file:" + e.getMessage());
 		}
@@ -109,14 +116,15 @@ public class GitZipJavaProjectRepositoryDO implements RepositoryDO {
 	}
 	
 	private void renameProjectFolder(String repoId, String gitUrl) {
-		String absPath = projPath + File.separator;
+		String absPath = TMP_PATH + File.separator;
 		File file = new File(absPath+GitUrlProcessor.getProjectName(gitUrl)+"-master");
 		file.renameTo(new File(absPath+repoId));
 	}
 	
 	private void buildUdb(String repoId) {
-		String absPath = projPath + File.separator + repoId + File.separator;
-		String cmd = "/Applications/Understand.app/Contents/MacOS/und -db " 
+		//TODO Scan src folder in subfolders.
+		String absPath = TMP_PATH + File.separator + repoId + File.separator;
+		String cmd = TMP_PATH+ File.separator + DIST + File.separator+"und -db " 
 				+ absPath + UDB_PROJECT_NAME + " create -languages Java " + "add " + absPath
 				+SRC_FOLDER+" settings -javaVersion Java8 analyze";
 		System.out.println(cmd);

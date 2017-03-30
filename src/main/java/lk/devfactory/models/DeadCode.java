@@ -68,11 +68,8 @@ public class DeadCode extends Entity{
 	}
 
 	public DeadCode() {
-		this.name ="lk.devfactory.Test.class";
 		this.globalVariables = new ArrayList<GlobalVariable>();
-		this.globalVariables.add(new GlobalVariable());
 		this.functions = new ArrayList<Function>();
-		this.functions.add(new Function());
     }
 
 	public DeadCode(String name, List<GlobalVariable> globalVariables, List<Function> functions) {

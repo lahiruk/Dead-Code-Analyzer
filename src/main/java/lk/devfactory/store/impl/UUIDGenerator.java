@@ -7,4 +7,7 @@ public class UUIDGenerator {
     return new UUID();
   }
  
+  public static final UUID get(String id){
+	    return new UUID(id);
+  }
 } 

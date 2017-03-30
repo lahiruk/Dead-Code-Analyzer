@@ -55,5 +55,12 @@ public class RepositoryCacheDS implements RepositoryDS<UUID,Repository> {
 		return repositoryCache.getAllEntries();
 	}
 
+	@Override
+	public void remove(UUID id) {
+		Repository repository = repositoryCache.getCacheEntry(id);
+		gitUrlCache.removeCacheEntry(repository.getUrl());
+		repositoryCache.removeCacheEntry(id);
+	}
+
 
 }

@@ -24,6 +24,10 @@ public class RepositoryCacheStore implements Cache<UUID,Repository>{
 		return true;
 	}
 	
+	public void removeCacheEntry(UUID id) {
+		cache.remove(id);
+	}
+	
 	public Stream<Repository> getAllEntries(){
 		return cache.values().stream();
 	}

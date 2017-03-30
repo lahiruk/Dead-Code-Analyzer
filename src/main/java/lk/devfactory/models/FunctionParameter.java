@@ -38,9 +38,6 @@ public class FunctionParameter extends Entity{
 	}
 
 	public FunctionParameter() {
-		this.name = "FunctionParam1";
-		this.lineNo = 10;
-		this.columnNo = 15;
 	}
 	
 	public FunctionParameter(String name, int lineNo, int columnNo) {

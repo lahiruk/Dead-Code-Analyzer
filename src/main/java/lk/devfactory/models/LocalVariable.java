@@ -38,9 +38,7 @@ public class LocalVariable extends Entity{
 	}
 
 	public LocalVariable() {
-		this.name = "LocalVar1";
-		this.lineNo = 10;
-		this.columnNo = 15;
+
 	}
 	
 	public LocalVariable(String name, int lineNo, int columnNo) {

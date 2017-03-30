@@ -25,7 +25,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 
 public class Repository {
-    private long id;
+    private String id;
     private String url;
     private List<DeadCode> deadCode;
     private String status;
@@ -41,11 +41,11 @@ public class Repository {
     }
 
     @JsonProperty
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

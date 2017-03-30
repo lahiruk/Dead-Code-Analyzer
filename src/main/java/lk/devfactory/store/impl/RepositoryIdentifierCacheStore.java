@@ -33,4 +33,10 @@ public class RepositoryIdentifierCacheStore implements Cache<String,UUID>{
 	public Stream<UUID> getAllEntries(){
 		return cache.values().stream();
 	}
+
+	@Override
+	public void removeCacheEntry(String id) {
+		cache.remove(id);
+		unique.remove(id);
+	}
 }

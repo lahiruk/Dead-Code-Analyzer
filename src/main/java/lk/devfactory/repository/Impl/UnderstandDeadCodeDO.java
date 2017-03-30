@@ -80,7 +80,7 @@ public class UnderstandDeadCodeDO implements DeadCodeDO {
 						+ "] > " + vRef.ent().kind().name());
 				
 				if (vRef.ent().kind().name().contains("Variable")) {
-					GlobalVariable gloVar = new GlobalVariable(vRef.ent().name(), 0, 0);
+					GlobalVariable gloVar = new GlobalVariable(vRef.ent().name(), vRef.line(), vRef.column());
 					if (!dead.getGlobalVariables().contains(gloVar)) {//Just to check global is already added. Potentially slow
 						dead.getGlobalVariables().add(gloVar);
 					} else {

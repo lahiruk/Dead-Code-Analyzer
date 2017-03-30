@@ -7,5 +7,7 @@ public interface Cache<K,E> {
 	
 	public boolean addCacheEntry(K id, E entry);
 	
+	public void removeCacheEntry(K id);
+	
 	public Stream<E> getAllEntries();
 }

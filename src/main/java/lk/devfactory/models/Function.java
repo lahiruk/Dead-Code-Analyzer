@@ -63,13 +63,8 @@ public class Function extends Entity{
 	}
 
 	public Function() {
-		this.name = "Function1";
-		this.lineNo = 10;
-		this.columnNo = 15;
 		this.parameters = new ArrayList<FunctionParameter>();
-		this.parameters.add(new FunctionParameter());
 		this.variables = new ArrayList<LocalVariable>();
-		this.variables.add(new LocalVariable());
 	}
 
 	public Function(String name, int lineNo, int columnNo, List<FunctionParameter> parameters, List<LocalVariable> variables) {

@@ -37,4 +37,9 @@ public class DeadCodeCacheDS implements RepositoryDS<String,DeadCode> {
 		return deadCodeCache.getAllEntries();
 	}
 
+	@Override
+	public void remove(String id) {
+		
+	}
+
 }

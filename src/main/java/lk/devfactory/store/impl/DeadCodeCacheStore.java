@@ -27,4 +27,9 @@ public class DeadCodeCacheStore implements Cache<String,DeadCode>{
 	public Stream<DeadCode> getAllEntries(){
 		return cache.values().stream();
 	}
+
+	@Override
+	public void removeCacheEntry(String id) {
+		
+	}
 }

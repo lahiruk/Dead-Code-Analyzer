@@ -2,15 +2,19 @@ package lk.devfactory.store.impl;
 
 public class UUID {
 	
-	private java.util.UUID UUID;
+	private String UUID;
 	
 	public UUID() {
-		this.UUID = java.util.UUID.randomUUID();
+		this.UUID = java.util.UUID.randomUUID().toString();
+	}
+	
+	protected UUID(String id) {
+		UUID = id;
 	}
 	
 	@Override
 	public String toString() {
-		return this.UUID.toString();
+		return this.UUID;
 	}
 	
 	@Override
