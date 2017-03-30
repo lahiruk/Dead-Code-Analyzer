@@ -19,8 +19,9 @@ public class RepositoryCacheStore implements Cache<UUID,Repository>{
 		return cache.get(id);
 	}
 	
-	public void addCacheEntry(UUID id, Repository repository) {
+	public boolean addCacheEntry(UUID id, Repository repository) {
 		cache.put(id, repository);
+		return true;
 	}
 	
 	public Stream<Repository> getAllEntries(){

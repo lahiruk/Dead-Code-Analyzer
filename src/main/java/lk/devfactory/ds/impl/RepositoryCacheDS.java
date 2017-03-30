@@ -11,34 +11,48 @@ import lk.devfactory.models.Repository;
 import lk.devfactory.store.Cache;
 import lk.devfactory.store.impl.UUID;
 
+//TODO Remove testing setter
 @Component
 @Qualifier("repositoryCacheDS")
-public class RepositotyCacheDS implements RepositoryDS<UUID,Repository> {
+public class RepositoryCacheDS implements RepositoryDS<UUID,Repository> {
 	
 	@Autowired()
 	@Qualifier("repositoryCache")
 	Cache<UUID, Repository> repositoryCache;
 
+	public void setRepositoryCache(Cache<UUID, Repository> repositoryCache) {
+		this.repositoryCache = repositoryCache;
+	}
+
 	@Autowired
 	@Qualifier("gitUrlCache")
 	Cache<String, UUID> gitUrlCache;
 
+	public void setGitUrlCache(Cache<String, UUID> gitUrlCache) {
+		this.gitUrlCache = gitUrlCache;
+	}
+
 	@Override
-	public void create(UUID id, Repository entity) {
-		// TODO Auto-generated method stub
-		
+	public boolean create(UUID id, Repository entity) {
+		boolean added = false;
+		UUID cacheId =gitUrlCache.getCacheEntry(entity.getUrl());
+		if (cacheId == null ){
+			added = gitUrlCache.addCacheEntry(entity.getUrl(), id);
+			if (added) {
+				repositoryCache.addCacheEntry(id, entity);
+			}
+		}
+		return added;
 	}
 
 	@Override
 	public Repository findById(UUID id) {
-		// TODO Auto-generated method stub
-		return null;
+		return repositoryCache.getCacheEntry(id);
 	}
 
 	@Override
 	public Stream<Repository> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return repositoryCache.getAllEntries();
 	}
 
 

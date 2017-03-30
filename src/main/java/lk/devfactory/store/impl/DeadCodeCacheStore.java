@@ -19,8 +19,9 @@ public class DeadCodeCacheStore implements Cache<String,DeadCode>{
 		return cache.get(id);
 	}
 	
-	public void addCacheEntry(String id, DeadCode entity) {
+	public boolean addCacheEntry(String id, DeadCode entity) {
 		cache.put(id, entity);
+		return true;
 	}
 	
 	public Stream<DeadCode> getAllEntries(){

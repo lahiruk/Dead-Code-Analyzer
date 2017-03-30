@@ -23,8 +23,8 @@ public class DeadCodeCacheDS implements RepositoryDS<String,DeadCode> {
 		this.deadCodeCache = deadCodeCache;
 	}
 
-	public void create(String id, DeadCode entity){
-		deadCodeCache.addCacheEntry(id, entity);
+	public boolean create(String id, DeadCode entity){
+		return deadCodeCache.addCacheEntry(id, entity);
 	}
 
 	@Override

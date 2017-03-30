@@ -33,8 +33,12 @@ public class GitZipJavaProjectRepositoryDO implements RepositoryDO {
 	
 	@Autowired
 	@Qualifier("repositoryCacheDS")
-	RepositoryDS repositoryDS;
+	RepositoryDS<UUID,Repository> repositoryDS;
 	
+	public void setRepositoryDS(RepositoryDS<UUID,Repository> repositoryDS) {
+		this.repositoryDS = repositoryDS;
+	}
+
 	@Autowired
 	DeadCodeDO deadCodeDO;
 	
@@ -45,25 +49,36 @@ public class GitZipJavaProjectRepositoryDO implements RepositoryDO {
 	@Override
 	//TODO replace Repository.getID to UUID type. Then reomve this additional UUID parameter
 	public Repository add(UUID id, Repository repository) {
-		download(id.toString(), repository.getUrl());
-		extract(id.toString());
-		renameProjectFolder(id.toString(),repository.getUrl());
-		buildUdb(id.toString());
-		List<DeadCode> deadCodeList = deadCodeDO.analyse(id, repository);
-		repository.setDeadCode(deadCodeList);
+		repository.setStatus("pending");
+		boolean existing = !repositoryDS.create(id, repository);
+		//TODO Cannot add already existing repository with this check.
+		//TODO need to make following block of code in if condition concurrent
+		if (!existing) {
+			repository.setStatus("downloading");
+			download(id.toString(), repository.getUrl());
+			//TODO Change the default status list in swagger enum
+			extract(id.toString());
+			renameProjectFolder(id.toString(),repository.getUrl());
+			buildUdb(id.toString());
+			repository.setStatus("analysing");
+			List<DeadCode> deadCodeList = deadCodeDO.analyse(id, repository);
+			repository.setStatus("completed");
+			repository.setDeadCode(deadCodeList);
+			
+		} else {
+			repository = repositoryDS.findById(id);
+		}
 		return repository;
 	}
 
 	@Override
 	public Stream<Repository> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return repositoryDS.findAll();
 	}
 
 	@Override
-	public Stream<Repository> findById(UUID id) {
-		// TODO Auto-generated method stub
-		return null;
+	public Repository findById(UUID id) {
+		return repositoryDS.findById(id);
 	}
 	
 	private void download(String repoId, String gitUrl) {

@@ -8,5 +8,5 @@ import lk.devfactory.store.impl.UUID;
 public interface RepositoryDO {
 	public Repository add(UUID id, Repository repository);
 	public Stream<Repository> findAll();
-	public Stream<Repository> findById(UUID id);
+	public Repository findById(UUID id);
 }

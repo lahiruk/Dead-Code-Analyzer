@@ -67,12 +67,17 @@ public class Repository {
 	}
 
 	@JsonProperty("status")
-    @ApiModelProperty(value = "Repository status in the store", allowableValues = "available,pending,sold")
+    @ApiModelProperty(value = "Repository status in the store", allowableValues = "pending,downloading,analysing,completed")
     public String getStatus() {
         return status;
     }
 
     public void setStatus(String status) {
         this.status = status;
+    }
+    
+    @Override
+    public String toString() {
+    	return getUrl() + "-->" +getStatus();
     }
 }
