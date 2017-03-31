@@ -11,7 +11,7 @@ import lk.devfactory.utility.SystemConst;
 @Component
 public class ProjectDirectory {
 
-	public void renameProjectFile(String gitUrl, String repoId){
+	protected void renameProjectFile(String gitUrl, String repoId){
 		String absPath = SystemConst.TMP_PATH + File.separator;
 		File file = new File(absPath+GitUrlProcessor.getProjectName(gitUrl)+"-master");
 		file.renameTo(new File(absPath+repoId));

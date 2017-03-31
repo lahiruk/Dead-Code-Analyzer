@@ -17,7 +17,7 @@ import lk.devfactory.utility.SystemConst;
 @Component
 public class ProjectDownload {
 	
-	public void download(String gitUrl, String repoId) {
+	protected void download(String gitUrl, String repoId) {
 		String absPath = SystemConst.TMP_PATH + File.separator;
 		FileOutputStream out = null;
 		try {
@@ -27,15 +27,9 @@ public class ProjectDownload {
 			InputStream in = connection.getInputStream();
 			out = new FileOutputStream(absPath + repoId + SystemConst.DOWNLOAD_PROJECT_SUFFIX);
 			FileCopyUtils.copy(in, out);
-
+			out.close();
 		} catch (IOException e) {
 			System.out.println("Failed to download repo:" + e.getMessage());
-		} finally {
-			try {
-				out.close();
-			} catch (IOException e) {
-				System.out.println("Failed to download repo:" + e.getMessage());
-			}
-		}
+		} 
 	}
 }

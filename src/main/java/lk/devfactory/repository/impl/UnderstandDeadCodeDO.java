@@ -1,6 +1,5 @@
 package lk.devfactory.repository.impl;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +9,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import com.scitools.understand.Database;
 import com.scitools.understand.Entity;
 import com.scitools.understand.Reference;
-import com.scitools.understand.Understand;
 import com.scitools.understand.UnderstandException;
 
 import lk.devfactory.ds.DeadCodeDS;
@@ -22,7 +20,6 @@ import lk.devfactory.models.LocalVariable;
 import lk.devfactory.models.Repository;
 import lk.devfactory.repository.DeadCodeDO;
 import lk.devfactory.store.impl.UUID;
-import lk.devfactory.utility.SystemConst;
 
 //TODO Add logger. Fix the exception throwing. Fix the project path. remove DS setter.
 @org.springframework.stereotype.Repository
@@ -31,13 +28,16 @@ public class UnderstandDeadCodeDO implements DeadCodeDO {
 	@Autowired
 	@Qualifier("deadCodeCacheDS")
 	DeadCodeDS<String, DeadCode> repositoryDS;
+	
+	@Autowired
+	UnderstandDatabase ud;
 
 	//TODO replace Repository.getID to UUID type. Then reomve this additional UUID parameter
 	public List<DeadCode> analyse(UUID id, Repository repository){
 		Database db;
 		List<DeadCode> deadCodeList = null;
 		try {
-			db = openDatabase(id.toString());
+			db = ud.openDatabase(id.toString());
 			deadCodeList = loadProjectEntities(db);
 			detectPvtDeadFuncs(db);
 			detectPvtDeadVars(db);
@@ -49,13 +49,7 @@ public class UnderstandDeadCodeDO implements DeadCodeDO {
 		return deadCodeList;
 	}
 	
-	private Database openDatabase(String repoId) throws UnderstandException{
-		String absPath = SystemConst.TMP_PATH + File.separator + repoId;
-		// Open the Understand Database
-		Database db = Understand.open(absPath + File.separator + SystemConst.UDB_PROJECT_NAME);
-		System.out.println("Project file :" + absPath + File.separator + SystemConst.UDB_PROJECT_NAME);
-		return db;
-	}
+
 	
 	private List<DeadCode> loadProjectEntities(Database db) {
 		List<DeadCode> deadCodeList = new ArrayList<DeadCode>();

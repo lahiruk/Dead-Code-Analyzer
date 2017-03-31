@@ -45,12 +45,12 @@ public class GitZipJavaProjectRepositoryDO implements RepositoryDO {
 		//TODO need to make following block of code in if condition concurrent
 		if (!existing) {
 			repository.setStatus("downloading");
-			download(id.toString(), repository.getUrl());
+			pd.download(repository.getUrl(), id.toString());
 			//TODO Handle no originalRepo found and propagate the exception back from here
 			//TODO Change the default status list in swagger enum
-			extract(id.toString());
-			renameProjectFolder(id.toString(),repository.getUrl());
-			buildUdb(id.toString());
+			ep.extract(id.toString());
+			pj.renameProjectFile(repository.getUrl(), id.toString());
+			sp.executeUnd(sp.getPrepairedCmd(id.toString()));
 			repository.setStatus("analysing");
 			List<DeadCode> deadCodeList = deadCodeDO.analyse(id, repository);
 			repository.setStatus("completed");
@@ -75,21 +75,5 @@ public class GitZipJavaProjectRepositoryDO implements RepositoryDO {
 	@Override
 	public void remove(UUID id) {
 		repositoryDS.remove(id);
-	}
-	
-	private void download(String repoId, String gitUrl) {
-		pd.download(gitUrl, repoId);
-	}
-
-	private void extract(String repoId) {
-		ep.extract(repoId);
-	}
-	
-	private void renameProjectFolder(String repoId, String gitUrl) {
-		pj.renameProjectFile(gitUrl, repoId);
-	}
-	
-	private void buildUdb(String repoId) {
-		sp.executeUnd(sp.getPrepairedCmd(repoId));
 	}
 }

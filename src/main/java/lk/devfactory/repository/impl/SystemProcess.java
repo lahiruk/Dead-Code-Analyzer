@@ -11,7 +11,7 @@ import lk.devfactory.utility.SystemConst;
 @Component
 public class SystemProcess {
 	
-	public String getPrepairedCmd(String repoId){
+	protected String getPrepairedCmd(String repoId){
 		//TODO Scan src folder in subfolders.
 		String absPath = SystemConst.TMP_PATH + File.separator + repoId + File.separator;
 		String cmd = SystemConst.TMP_PATH+ File.separator + SystemConst.DIST + File.separator+"und -db " 
@@ -21,7 +21,7 @@ public class SystemProcess {
 		return cmd;
 	}
 	
-	public void executeUnd(String cmd) {
+	protected void executeUnd(String cmd) {
 		try {
 			Process p = Runtime.getRuntime().exec(cmd);
 			System.out.println("Waiting for udb build ...");
