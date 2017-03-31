@@ -1,45 +1,49 @@
-package lk.devfactory.test.unit;
+package lk.devfactory.repository.impl;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import lk.devfactory.ds.impl.DeadCodeCacheDS;
-import lk.devfactory.ds.impl.RepositoryCacheDS;
+import lk.devfactory.SystemPropertyTestSupport;
+import lk.devfactory.models.DeadCode;
 import lk.devfactory.models.Repository;
-import lk.devfactory.repository.Impl.GitZipJavaProjectRepositoryDO;
-import lk.devfactory.repository.Impl.UnderstandDeadCodeDO;
-import lk.devfactory.store.impl.DeadCodeCacheStore;
-import lk.devfactory.store.impl.RepositoryCacheStore;
-import lk.devfactory.store.impl.RepositoryIdentifierCacheStore;
+import lk.devfactory.repository.RepositoryDO;
+import lk.devfactory.store.impl.UUID;
 import lk.devfactory.store.impl.UUIDGenerator;
 
 @RunWith(SpringRunner.class)
-public class GitZipJavaProjectRepositoryTests {
+@SpringBootTest
+public class UnderstandDeadCodeDOTests extends SystemPropertyTestSupport {
+	
 	Repository repository;
+	UUID uuid;
+	List<DeadCode> deadCodeList;
+	
+	@Autowired
+	RepositoryDO reposiotryDO;
+	
 	
 	@Before
 	public void before(){
 		repository = new Repository();
         repository.setUrl("https://github.com/lahiruk/exam-conductor");
+        uuid = UUIDGenerator.get();
+        deadCodeList = new ArrayList<DeadCode>();
 	}
 
+	//TODO : convert this to a proper assert base test.
 	@Test
-	public void repositoryAdd() {
-		GitZipJavaProjectRepositoryDO repoDO = new GitZipJavaProjectRepositoryDO();
-		UnderstandDeadCodeDO understandDCDO = new UnderstandDeadCodeDO();
-		DeadCodeCacheDS cacheDS = new DeadCodeCacheDS();
-		cacheDS.setDeadCodeCache(new DeadCodeCacheStore());
-		understandDCDO.setRepositoryDS(cacheDS);
-		repoDO.setDeadCodeDO(understandDCDO);
-		RepositoryCacheDS repositoryDS = new RepositoryCacheDS();
-		repositoryDS.setGitUrlCache(new RepositoryIdentifierCacheStore());
-		repositoryDS.setRepositoryCache(new RepositoryCacheStore());
-		repoDO.setRepositoryDS(repositoryDS);
-		repoDO.add(UUIDGenerator.get(), repository);
-		repoDO.findAll().forEach(reposiotryQ -> {
+	public void deadCodeVisualAnalyse() {
+          
+		reposiotryDO.add(uuid, repository);
+		reposiotryDO.findAll().forEach(reposiotryQ -> {
 			System.out.println("Repository:");
 			System.out.println(ReflectionToStringBuilder.toString(reposiotryQ));
 

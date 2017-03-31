@@ -1,6 +1,5 @@
-package lk.devfactory.repository.Impl;
+package lk.devfactory.repository.impl;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,10 +9,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import com.scitools.understand.Database;
 import com.scitools.understand.Entity;
 import com.scitools.understand.Reference;
-import com.scitools.understand.Understand;
 import com.scitools.understand.UnderstandException;
 
-import lk.devfactory.ds.RepositoryDS;
+import lk.devfactory.ds.DeadCodeDS;
 import lk.devfactory.models.DeadCode;
 import lk.devfactory.models.Function;
 import lk.devfactory.models.FunctionParameter;
@@ -27,23 +25,19 @@ import lk.devfactory.store.impl.UUID;
 @org.springframework.stereotype.Repository
 public class UnderstandDeadCodeDO implements DeadCodeDO {
 	
-	public static final String projPath = "/Users/lahiru/tmp";
-	public static final String UDB_PROJECT_NAME = "und_project.udb";
-	
 	@Autowired
 	@Qualifier("deadCodeCacheDS")
-	RepositoryDS<String, DeadCode> repositoryDS;
+	DeadCodeDS<String, DeadCode> repositoryDS;
 	
-	public void setRepositoryDS(RepositoryDS<String, DeadCode> repositoryDS) {
-		this.repositoryDS = repositoryDS;
-	}
+	@Autowired
+	UnderstandDatabase ud;
 
 	//TODO replace Repository.getID to UUID type. Then reomve this additional UUID parameter
 	public List<DeadCode> analyse(UUID id, Repository repository){
 		Database db;
 		List<DeadCode> deadCodeList = null;
 		try {
-			db = openDatabase(id.toString());
+			db = ud.openDatabase(id.toString());
 			deadCodeList = loadProjectEntities(db);
 			detectPvtDeadFuncs(db);
 			detectPvtDeadVars(db);
@@ -55,13 +49,7 @@ public class UnderstandDeadCodeDO implements DeadCodeDO {
 		return deadCodeList;
 	}
 	
-	private Database openDatabase(String repoId) throws UnderstandException{
-		String absPath = projPath + File.separator + repoId;
-		// Open the Understand Database
-		Database db = Understand.open(absPath + File.separator + UDB_PROJECT_NAME);
-		System.out.println("Project file :" + absPath + File.separator + UDB_PROJECT_NAME);
-		return db;
-	}
+
 	
 	private List<DeadCode> loadProjectEntities(Database db) {
 		List<DeadCode> deadCodeList = new ArrayList<DeadCode>();

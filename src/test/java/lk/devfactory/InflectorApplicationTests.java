@@ -7,7 +7,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class InflectorApplicationTests {
+public class InflectorApplicationTests extends SystemPropertyTestSupport{
 
 	@Test
 	public void contextLoads() {

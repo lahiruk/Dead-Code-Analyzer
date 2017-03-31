@@ -14,23 +14,15 @@ import lk.devfactory.store.impl.UUID;
 //TODO Remove testing setter
 @Component
 @Qualifier("repositoryCacheDS")
-public class RepositoryCacheDS implements RepositoryDS<UUID,Repository> {
+public class RepositoryCacheDS implements RepositoryDS<UUID,Repository,String> {
 	
 	@Autowired()
 	@Qualifier("repositoryCache")
 	Cache<UUID, Repository> repositoryCache;
 
-	public void setRepositoryCache(Cache<UUID, Repository> repositoryCache) {
-		this.repositoryCache = repositoryCache;
-	}
-
 	@Autowired
 	@Qualifier("gitUrlCache")
 	Cache<String, UUID> gitUrlCache;
-
-	public void setGitUrlCache(Cache<String, UUID> gitUrlCache) {
-		this.gitUrlCache = gitUrlCache;
-	}
 
 	@Override
 	public boolean create(UUID id, Repository entity) {
@@ -60,6 +52,12 @@ public class RepositoryCacheDS implements RepositoryDS<UUID,Repository> {
 		Repository repository = repositoryCache.getCacheEntry(id);
 		gitUrlCache.removeCacheEntry(repository.getUrl());
 		repositoryCache.removeCacheEntry(id);
+	}
+
+	@Override
+	public Repository findByNonIdUniqueKey(String unique) {
+		UUID uuid = gitUrlCache.getCacheEntry(unique);
+		return repositoryCache.getCacheEntry(uuid);
 	}
 
 
