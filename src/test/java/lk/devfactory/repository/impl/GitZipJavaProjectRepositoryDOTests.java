@@ -31,8 +31,6 @@ public class GitZipJavaProjectRepositoryDOTests extends SystemPropertyTestSuppor
 	Repository originalRepo;
 	UUID uuid;
 	List<DeadCode> deadCodeList;
-	//TODO : path should be fixed to run on other user machine
-	static final String cmd = "/Users/lahiru/tmp/MacOS/und -db /Users/lahiru/tmp/9f78a002-2237-44b9-9d9b-aa401dcc771c/und_project.udb create -languages Java add /Users/lahiru/tmp/9f78a002-2237-44b9-9d9b-aa401dcc771c/src settings -javaVersion Java8 analyze";
 	
 	@Autowired
 	RepositoryDO reposiotryDO;

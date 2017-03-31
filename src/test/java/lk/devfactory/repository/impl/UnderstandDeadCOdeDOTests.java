@@ -24,8 +24,8 @@ import lk.devfactory.repository.RepositoryDO;
 import lk.devfactory.store.impl.UUID;
 import lk.devfactory.store.impl.UUIDGenerator;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
+//@RunWith(SpringRunner.class)
+//@SpringBootTest
 public class UnderstandDeadCOdeDOTests extends SystemPropertyTestSupport {
 	
 	Repository originalRepo;
@@ -61,31 +61,6 @@ public class UnderstandDeadCOdeDOTests extends SystemPropertyTestSupport {
         originalRepo.setUrl("https://github.com/lahiruk/exam-conductor");
         uuid = UUIDGenerator.get();
         deadCodeList = new ArrayList<DeadCode>();
-	}
-
-	@Test
-	public void repositoryAddNew() {
-		given(this.deadCodeDO.analyse(uuid, originalRepo)).willReturn(deadCodeList);
-		given(this.repositoryDS.create(uuid, originalRepo)).willReturn(true);
-		
-		Repository savedRepo = reposiotryDO.add(uuid, originalRepo);
-
-		assertSame("deadCodeList is not the same", deadCodeList, savedRepo.getDeadCode());
-		assertEquals("Status", "completed", savedRepo.getStatus());
-		assertEquals("UUID", uuid.toString(), savedRepo.getId());
-	}
-	
-	@Test
-	public void repositoryAddExisting() {
-		given(this.repositoryDS.create(uuid, originalRepo)).willReturn(true);
-		Repository savedRepo = reposiotryDO.add(uuid, originalRepo);
-		
-		UUID newUuid = UUIDGenerator.get();
-		given(this.repositoryDS.create(uuid, originalRepo)).willReturn(false);
-		given(this.repositoryDS.findByNonIdUniqueKey(originalRepo.getUrl())).willReturn(savedRepo);
-		Repository sameRepo = reposiotryDO.add(newUuid, originalRepo);
-
-		assertEquals("UUID", savedRepo.getId(), sameRepo.getId());
 	}
 	
 	
