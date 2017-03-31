@@ -7,6 +7,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+
+import org.springframework.stereotype.Component;
  
 /**
  * This utility extracts files and directories of a standard zip file to
@@ -14,6 +16,7 @@ import java.util.zip.ZipInputStream;
  * @author www.codejava.net
  *
  */
+@Component
 public class UnzipUtility {
     /**
      * Size of the buffer to read/write data

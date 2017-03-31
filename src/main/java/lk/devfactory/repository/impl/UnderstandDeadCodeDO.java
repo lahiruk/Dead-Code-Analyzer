@@ -1,4 +1,4 @@
-package lk.devfactory.repository.Impl;
+package lk.devfactory.repository.impl;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ import com.scitools.understand.Reference;
 import com.scitools.understand.Understand;
 import com.scitools.understand.UnderstandException;
 
-import lk.devfactory.ds.RepositoryDS;
+import lk.devfactory.ds.DeadCodeDS;
 import lk.devfactory.models.DeadCode;
 import lk.devfactory.models.Function;
 import lk.devfactory.models.FunctionParameter;
@@ -32,11 +32,7 @@ public class UnderstandDeadCodeDO implements DeadCodeDO {
 	
 	@Autowired
 	@Qualifier("deadCodeCacheDS")
-	RepositoryDS<String, DeadCode> repositoryDS;
-	
-	public void setRepositoryDS(RepositoryDS<String, DeadCode> repositoryDS) {
-		this.repositoryDS = repositoryDS;
-	}
+	DeadCodeDS<String, DeadCode> repositoryDS;
 
 	//TODO replace Repository.getID to UUID type. Then reomve this additional UUID parameter
 	public List<DeadCode> analyse(UUID id, Repository repository){
