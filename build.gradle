@@ -106,5 +106,6 @@ dependencies {
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	
 	compile files("/Applications/Understand.app/Contents/MacOS/Java/com.scitools.understand.plugin_1.1.3.jar")
+	compile('org.zeroturnaround:zt-exec:1.9')
 
 }

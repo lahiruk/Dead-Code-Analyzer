@@ -60,5 +60,11 @@ public class RepositoryCacheDS implements RepositoryDS<UUID,Repository,String> {
 		return repositoryCache.getCacheEntry(uuid);
 	}
 
+	@Override
+	public void update(UUID id, Repository Entiry) {
+		repositoryCache.removeCacheEntry(id);
+		repositoryCache.addCacheEntry(id, Entiry);
+	}
+
 
 }

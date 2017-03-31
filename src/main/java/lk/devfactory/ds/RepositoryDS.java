@@ -8,4 +8,5 @@ public interface RepositoryDS<K,E,U> {
 	public Stream<E> findAll();
 	public void remove(K id);
 	public E findByNonIdUniqueKey(U unique);
+	public void update(K id, E Entiry);
 }

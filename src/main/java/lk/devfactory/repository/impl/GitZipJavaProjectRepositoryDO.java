@@ -53,8 +53,9 @@ public class GitZipJavaProjectRepositoryDO implements RepositoryDO {
 			sp.executeUnd(sp.getPrepairedCmd(id.toString()));
 			repository.setStatus("analysing");
 			List<DeadCode> deadCodeList = deadCodeDO.analyse(id, repository);
-			repository.setStatus("completed");
 			repository.setDeadCode(deadCodeList);
+			repositoryDS.update(id, repository);
+			repository.setStatus("completed");
 			repository.setId(id.toString());
 		} else {
 			repository = repositoryDS.findByNonIdUniqueKey(repository.getUrl());

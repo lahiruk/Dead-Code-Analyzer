@@ -26,10 +26,6 @@ import lk.devfactory.store.impl.UUID;
 public class UnderstandDeadCodeDO implements DeadCodeDO {
 	
 	@Autowired
-	@Qualifier("deadCodeCacheDS")
-	DeadCodeDS<String, DeadCode> repositoryDS;
-	
-	@Autowired
 	UnderstandDatabase ud;
 
 	//TODO replace Repository.getID to UUID type. Then reomve this additional UUID parameter
@@ -39,9 +35,9 @@ public class UnderstandDeadCodeDO implements DeadCodeDO {
 		try {
 			db = ud.openDatabase(id.toString());
 			deadCodeList = loadProjectEntities(db);
-			detectPvtDeadFuncs(db);
-			detectPvtDeadVars(db);
-			detectPvtDeadFuncParams(db);
+			detectPvtDeadFuncs(db, deadCodeList);
+			detectPvtDeadVars(db, deadCodeList);
+			detectPvtDeadFuncParams(db, deadCodeList);
 		} catch (UnderstandException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -51,7 +47,7 @@ public class UnderstandDeadCodeDO implements DeadCodeDO {
 	
 
 	
-	private List<DeadCode> loadProjectEntities(Database db) {
+	protected List<DeadCode> loadProjectEntities(Database db) {
 		List<DeadCode> deadCodeList = new ArrayList<DeadCode>();
 		// Get a list of all functions and methods
 		Entity[] clazz = db.ents("class ~unknown ~unresolved");
@@ -119,17 +115,16 @@ public class UnderstandDeadCodeDO implements DeadCodeDO {
 					}
 			    }
 			}
-			repositoryDS.create(e.name(), dead);
 			deadCodeList.add(dead);
 		}
 		return deadCodeList;
 	}
 
-	private void detectPvtDeadFuncs(Database db) {
+	protected void detectPvtDeadFuncs(Database db, List<DeadCode> deadCodeList) {
 		// Get a list of all functions and methods
 		Entity[] funcs = db.ents("function private ~unknown ~unresolved,method private ~unknown ~unresolved");
 		
-		repositoryDS.findAll().forEach(dead -> {
+		deadCodeList.forEach(dead -> {
 			for (Entity e : funcs) {
 				System.out.println(e.name() + " : " + e.kind());
 				
@@ -145,11 +140,11 @@ public class UnderstandDeadCodeDO implements DeadCodeDO {
 		});
 	}
 
-	private void detectPvtDeadVars(Database db) {
+	protected void detectPvtDeadVars(Database db, List<DeadCode> deadCodeList) {
 		// Get a list of all variables
 		Entity[] vars = db.ents("variable ~unknown");
 
-		repositoryDS.findAll().forEach(dead -> {
+		deadCodeList.forEach(dead -> {
 			for (Entity e : vars) {
 				System.out.println(e.name() + " : " + e.kind());
 	
@@ -171,11 +166,11 @@ public class UnderstandDeadCodeDO implements DeadCodeDO {
 		});
 	}
 
-	private void detectPvtDeadFuncParams(Database db) {
+	protected void detectPvtDeadFuncParams(Database db, List<DeadCode> deadCodeList) {
 		// Get a list of all functions and methods
 		Entity[] funcs = db.ents("function ~unknown ~unresolved,method ~unknown ~unresolved");
 
-		repositoryDS.findAll().forEach(dead -> {
+		deadCodeList.forEach(dead -> {
 			for (Entity e : funcs) {
 				System.out.println(e.name() + " : " + e.kind());
 	
