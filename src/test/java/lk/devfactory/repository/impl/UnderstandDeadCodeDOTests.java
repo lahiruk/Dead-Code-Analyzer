@@ -26,7 +26,7 @@ import lk.devfactory.store.impl.UUIDGenerator;
 
 //@RunWith(SpringRunner.class)
 //@SpringBootTest
-public class UnderstandDeadCOdeDOTests extends SystemPropertyTestSupport {
+public class UnderstandDeadCodeDOTests extends SystemPropertyTestSupport {
 	
 	Repository originalRepo;
 	UUID uuid;

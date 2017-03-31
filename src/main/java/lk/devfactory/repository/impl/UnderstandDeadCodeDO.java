@@ -22,13 +22,11 @@ import lk.devfactory.models.LocalVariable;
 import lk.devfactory.models.Repository;
 import lk.devfactory.repository.DeadCodeDO;
 import lk.devfactory.store.impl.UUID;
+import lk.devfactory.utility.SystemConst;
 
 //TODO Add logger. Fix the exception throwing. Fix the project path. remove DS setter.
 @org.springframework.stereotype.Repository
 public class UnderstandDeadCodeDO implements DeadCodeDO {
-	
-	public static final String projPath = "/Users/lahiru/tmp";
-	public static final String UDB_PROJECT_NAME = "und_project.udb";
 	
 	@Autowired
 	@Qualifier("deadCodeCacheDS")
@@ -52,10 +50,10 @@ public class UnderstandDeadCodeDO implements DeadCodeDO {
 	}
 	
 	private Database openDatabase(String repoId) throws UnderstandException{
-		String absPath = projPath + File.separator + repoId;
+		String absPath = SystemConst.TMP_PATH + File.separator + repoId;
 		// Open the Understand Database
-		Database db = Understand.open(absPath + File.separator + UDB_PROJECT_NAME);
-		System.out.println("Project file :" + absPath + File.separator + UDB_PROJECT_NAME);
+		Database db = Understand.open(absPath + File.separator + SystemConst.UDB_PROJECT_NAME);
+		System.out.println("Project file :" + absPath + File.separator + SystemConst.UDB_PROJECT_NAME);
 		return db;
 	}
 	
