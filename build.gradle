@@ -60,26 +60,26 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 }
 
 task copyUnderstand(type: Copy, dependsOn: bootRepackage) {
-	copy {
+	copy { //For tests to run und command
       from "/Applications/Understand.app/Contents/MacOS"
       into "/Users/lahiru/tmp/MacOS"
     }
 }
 
 docker {
-    maintainer = 'lkdevfactory <lahirukarunatilake@yahoo.com>'
+    maintainer = 'lkdevfactory <lahiru.karunatilake@aurea.com>'
 }
 
 task buildDocker(type: Docker, dependsOn: build) {
  //push = true
   applicationName = jar.baseName
-  dockerfile = file('src/main/docker/Dockerfile')
+  dockerfile = file('src/main/docker/Ubuntu/Dockerfile')
   doFirst {
     copy {
       from jar
       into stageDir
     }
-    copy {
+    copy { //For ubuntu docker
       from "/Users/lahiru/tmp/scitools/bin/linux64"
       into "$stageDir/linux64"
     }

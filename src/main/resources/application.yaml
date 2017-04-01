@@ -5,7 +5,7 @@ spring:
   application:
     name: dead-code-analyzer
   jersey:
-    application-path: /api
+    application-path: /api-lahiru
   jackson:
     date-format: com.fasterxml.jackson.databind.util.ISO8601DateFormat
     default-property-inclusion: NON_ABSENT
