@@ -14,6 +14,7 @@ import io.swagger.inflector.models.ResponseContext;
 import lk.devfactory.models.Repository;
 import lk.devfactory.repository.RepositoryDO;
 import lk.devfactory.store.impl.UUIDGenerator;
+import lk.devfactory.store.impl.UUID;
 
 //TODO : validate input
 @Component
@@ -27,7 +28,9 @@ public class RepositoryController {
     //TODO: Handle already submitted repo
     //TODO: Handle 405
     public ResponseContext addRepo(RequestContext request, Repository body) {
-    	body = repository.add(UUIDGenerator.get(), body);
+    	UUID uuid = UUIDGenerator.get();
+    	System.out.println("Id for repo : "+uuid);
+    	body = repository.add(uuid, body);
         return new ResponseContext()
                 .status(Status.OK)
                 .entity(body);
