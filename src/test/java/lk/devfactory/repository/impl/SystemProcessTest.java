@@ -1,11 +1,8 @@
 package lk.devfactory.repository.impl;
 
-import static org.junit.Assert.assertEquals;
-
 import java.io.File;
 
 import org.junit.Before;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,8 +31,4 @@ public class SystemProcessTest extends SystemPropertyTestSupport{
 				+SystemConst.SRC_FOLDER+" settings -javaVersion Java8 analyze";
 	}
 	
-	@Test
-	public void prepareCmd(){
-		assertEquals("Unexpected cmd returned:", cmd, sp.getPrepairedCmd(repoId));
-	}
 }

@@ -70,7 +70,7 @@ docker {
     maintainer = 'lkdevfactory <lahiru.karunatilake@aurea.com>'
 }
 
-task buildDocker(type: Docker, dependsOn: build) {
+task buildDocker(type: Docker, dependsOn: [":dead-code-worker:bootRepackage", bootRepackage]) {
  //push = true
   applicationName = jar.baseName
   dockerfile = file('src/main/docker/Ubuntu/Dockerfile')
@@ -84,8 +84,8 @@ task buildDocker(type: Docker, dependsOn: build) {
       into stageDir
     }
     copy { //For ubuntu docker
-      from "/Users/lahiru/tmp/scitools/bin/linux64"
-      into "$stageDir/linux64"
+      from "/Users/lahiru/tmp/scitools"
+      into "$stageDir/scitools"
     }
   }
 }
