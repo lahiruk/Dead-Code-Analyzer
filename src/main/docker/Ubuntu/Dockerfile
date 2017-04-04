@@ -16,8 +16,7 @@ RUN apt-get -y install libxi6
 RUN apt-get install awscli -y
 
 VOLUME /tmp
-RUN mkdir /tmp/linux64
-RUN mkdir /tmp/conf
+RUN mkdir /tmp/scitools
 COPY ["scitools","/tmp/scitools"]
 ADD dead-code-analyzer-1.0.0.jar app.jar
 ADD dead-code-worker-1.0.0.jar dead-code-worker-1.0.0.jar

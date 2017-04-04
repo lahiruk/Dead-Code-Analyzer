@@ -66,6 +66,21 @@ task copyUnderstand(type: Copy, dependsOn: bootRepackage) {
     }
 }
 
+task manualDockerPush(type: Copy, dependsOn: [":dead-code-worker:bootRepackage", bootRepackage]) {
+    copy {
+      from "build/libs/dead-code-analyzer-1.0.0.jar"
+      into "src/main/docker/Ubuntu"
+    }
+    copy {
+      from "dead-code-worker/build/libs/dead-code-worker-1.0.0.jar"
+      into "src/main/docker/Ubuntu"
+    }
+    copy { //For ubuntu docker
+      from "/Users/lahiru/tmp/scitools"
+      into "src/main/docker/Ubuntu/scitools"
+    }
+}
+
 docker {
     maintainer = 'lkdevfactory <lahiru.karunatilake@aurea.com>'
 }
