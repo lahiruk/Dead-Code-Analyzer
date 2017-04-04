@@ -1,5 +1,6 @@
 package lk.devfactory.store.impl;
 
+//TODO Add javadocs
 public class UUID {
 	
 	private String UUID;

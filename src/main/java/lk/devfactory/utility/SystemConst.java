@@ -1,5 +1,6 @@
 package lk.devfactory.utility;
 
+//TODO add javadocs
 public final class SystemConst {
 	public static final String SRC_FOLDER = "src";
 	public static final String TMP_PATH = System.getProperty("tmpPath","/tmp");

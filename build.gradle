@@ -38,8 +38,9 @@ repositories {
 sourceSets {
     main {
         resources {
-            srcDirs "src/main/swagger","."
+            srcDirs "src/main/swagger",".","src/main/resources"
             include "*.yaml"
+            include "*.xml"
         }
     }
 }
