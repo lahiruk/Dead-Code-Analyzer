@@ -1,11 +1,11 @@
 server:
     port: 8080
-    servlet-path: /
+    servlet-path: /swagger
 spring:
   application:
     name: dead-code-analyzer
   jersey:
-    application-path: /api
+    application-path: /
   jackson:
     date-format: com.fasterxml.jackson.databind.util.ISO8601DateFormat
     default-property-inclusion: NON_ABSENT

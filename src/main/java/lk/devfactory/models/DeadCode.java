@@ -48,6 +48,12 @@ public class DeadCode extends Entity{
 	public int getColumnNo() {
 		return 0;// class does not have a columnNo
 	}
+	
+	public void setLineNo(int lineNo) {
+	}
+	
+	public void setColumnNo(int columnNo) {
+	}
 
     @JsonProperty
 	public List<GlobalVariable> getGlobalVariables() {

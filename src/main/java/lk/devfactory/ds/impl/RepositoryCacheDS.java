@@ -11,7 +11,7 @@ import lk.devfactory.models.Repository;
 import lk.devfactory.store.Cache;
 import lk.devfactory.store.impl.UUID;
 
-//TODO Remove testing setter
+//TODO Add javadocs
 @Component
 @Qualifier("repositoryCacheDS")
 public class RepositoryCacheDS implements RepositoryDS<UUID,Repository,String> {
@@ -58,6 +58,12 @@ public class RepositoryCacheDS implements RepositoryDS<UUID,Repository,String> {
 	public Repository findByNonIdUniqueKey(String unique) {
 		UUID uuid = gitUrlCache.getCacheEntry(unique);
 		return repositoryCache.getCacheEntry(uuid);
+	}
+
+	@Override
+	public void update(UUID id, Repository Entiry) {
+		repositoryCache.removeCacheEntry(id);
+		repositoryCache.addCacheEntry(id, Entiry);
 	}
 
 
