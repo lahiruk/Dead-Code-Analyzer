@@ -2,6 +2,7 @@ package lk.devfactory.store;
 
 import java.util.stream.Stream;
 
+//TODO : Add javadocs
 public interface Cache<K,E> {
 	public E getCacheEntry(K id);
 	

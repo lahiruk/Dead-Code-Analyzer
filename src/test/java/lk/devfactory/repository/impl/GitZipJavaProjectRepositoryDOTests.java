@@ -19,7 +19,7 @@ import lk.devfactory.SystemPropertyTestSupport;
 import lk.devfactory.ds.RepositoryDS;
 import lk.devfactory.models.DeadCode;
 import lk.devfactory.models.Repository;
-import lk.devfactory.repository.DeadCodeDO;
+//import lk.devfactory.reposiotry.DeadCodeDO;
 import lk.devfactory.repository.RepositoryDO;
 import lk.devfactory.store.impl.UUID;
 import lk.devfactory.store.impl.UUIDGenerator;
@@ -38,8 +38,8 @@ public class GitZipJavaProjectRepositoryDOTests extends SystemPropertyTestSuppor
 	@MockBean
 	RepositoryDS<UUID, Repository, String> repositoryDS;
 	
-	@MockBean
-	DeadCodeDO deadCodeDO;
+//	@MockBean
+//	DeadCodeDO deadCodeDO;
 	
 	@MockBean
 	SystemProcess sp;
@@ -63,7 +63,7 @@ public class GitZipJavaProjectRepositoryDOTests extends SystemPropertyTestSuppor
 
 	@Test
 	public void repositoryAddNew() {
-		given(this.deadCodeDO.analyse(uuid, originalRepo)).willReturn(deadCodeList);
+//		given(this.deadCodeDO.analyse(uuid, originalRepo)).willReturn(deadCodeList);
 		given(this.repositoryDS.create(uuid, originalRepo)).willReturn(true);
 		
 		Repository savedRepo = reposiotryDO.add(uuid, originalRepo);

@@ -1,4 +1,3 @@
-//TODO: remove following hardcoded path /Applications and /Users/lahiru/tmp/scitools/bin/linux64/
 buildscript {
 	ext {
 		springBootVersion = '1.5.2.RELEASE'
@@ -36,15 +35,6 @@ repositories {
 	mavenCentral()
 }
 
-sourceSets {
-    main {
-        resources {
-            srcDirs "src/main/swagger","."
-            include "*.yaml"
-        }
-    }
-}
-
 springBoot  {
     buildInfo()
 }
@@ -59,29 +49,43 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
     from javadoc.destinationDir
 }
 
-task copyUnderstand(type: Copy, dependsOn: bootRepackage) {
-	copy {
-      from "/Applications/Understand.app/Contents/MacOS"
-      into "/Users/lahiru/tmp/MacOS"
-    }
+task copySciTools(type: Copy) {
+     from scitoolsPath
+     into "$rootProject.buildDir/docker/scitools"
+}
+
+allprojects {
+	task copyProjLib(type: Copy) {
+	    from "$projectDir/build/libs/$project.name-$rootProject.version"+'.jar'
+	    into "$rootProject.buildDir/docker"
+	}
+}
+
+task manualDockerPush(type: Copy, dependsOn: [":dead-code-worker:bootRepackage", bootRepackage, copySciTools,copyProjLib, ":dead-code-worker:copyProjLib"]) {
+	from 'src/main/docker/Ubuntu/Dockerfile'
+	into "$buildDir/docker"
 }
 
 docker {
-    maintainer = 'lkdevfactory <lahirukarunatilake@yahoo.com>'
+    maintainer = 'lkdevfactory <lahiru.karunatilake@aurea.com>'
 }
 
-task buildDocker(type: Docker, dependsOn: build) {
+task buildDocker(type: Docker, dependsOn: [":dead-code-worker:bootRepackage", bootRepackage]) {
  //push = true
   applicationName = jar.baseName
-  dockerfile = file('src/main/docker/Dockerfile')
+  dockerfile = file('src/main/docker/Ubuntu/Dockerfile')
   doFirst {
     copy {
       from jar
       into stageDir
     }
     copy {
-      from "/Users/lahiru/tmp/scitools/bin/linux64"
-      into "$stageDir/linux64"
+      from "dead-code-worker/build/libs/"
+      into stageDir
+    }
+    copy { //For ubuntu docker
+      from scitoolsPath
+      into "$stageDir/scitools"
     }
   }
 }
@@ -106,5 +110,8 @@ dependencies {
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	
 	compile files("/Applications/Understand.app/Contents/MacOS/Java/com.scitools.understand.plugin_1.1.3.jar")
+	compile('org.zeroturnaround:zt-exec:1.9')
+	
+	compile project(':dead-code-worker')
 
 }

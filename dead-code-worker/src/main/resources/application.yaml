@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: dead-code-worker
+  jackson:
+    date-format: com.fasterxml.jackson.databind.util.ISO8601DateFormat
+    default-property-inclusion: NON_ABSENT
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
+      INDENT_OUTPUT: true

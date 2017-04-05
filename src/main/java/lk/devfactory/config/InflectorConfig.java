@@ -5,9 +5,7 @@ import io.swagger.inflector.config.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-/**
- *
- */
+//TODO add java docs
 @Component
 public class InflectorConfig extends SwaggerInflector {
 

@@ -1,5 +1,6 @@
 package lk.devfactory.store.impl;
 
+//TODO add javadocs
 public class UUIDGenerator {
   
   public static final UUID get(){

@@ -9,7 +9,7 @@ info:
   license:
     name: Apache 2.0
     url: "http://www.apache.org/licenses/LICENSE-2.0.html"
-basePath: /v1
+basePath: /api-lahiru/v1
 tags:
   - name: repository
     description: Everything about your Project Repo's Dead Code
@@ -32,7 +32,7 @@ paths:
         - name: body
           in: body
           description: Repository object that needs to be added to the analyse
-          required: false
+          required: true
           schema:
             $ref: "#/definitions/Repository"
       responses:
@@ -66,7 +66,7 @@ paths:
     get:
       tags:
         - repository
-      summary: Find repository and dead code analysis by ID
+      summary: Find repository dead code analysis by ID
       x-swagger-router-controller: RepositoryController
       description: Returns a dead code analysis
       operationId: getRepoDeadCodeByID

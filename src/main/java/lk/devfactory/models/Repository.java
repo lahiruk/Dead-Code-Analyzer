@@ -67,7 +67,7 @@ public class Repository {
 	}
 
 	@JsonProperty("status")
-    @ApiModelProperty(value = "Repository status in the store", allowableValues = "pending,downloading,analysing,completed")
+    @ApiModelProperty(value = "Repository status in the store", allowableValues = "pending,downloading,analysing,completed,failed")
     public String getStatus() {
         return status;
     }
