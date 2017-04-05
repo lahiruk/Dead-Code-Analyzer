@@ -1,7 +1,8 @@
 controllerPackage: lk.devfactory.controllers
 modelPackage: lk.devfactory.models
 swaggerUrl: swagger.yaml
-exceptionMapper: io.swagger.inflector.utils.DefaultExceptionMapper
+exceptionMappers: ['io.swagger.inflector.utils.DefaultExceptionMapper']
+inputValidators: ['io.swagger.inflector.validators.DefaultValidator']
 modelMappings:
   Repository: lk.devfactory.models.Repository
 # loads all by default, or pick and choose

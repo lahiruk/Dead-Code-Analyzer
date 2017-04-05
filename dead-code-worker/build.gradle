@@ -30,7 +30,7 @@ apply plugin: 'maven'
 apply plugin: 'org.springframework.boot'
 
 group = 'lkdevfactory'
-project.version = '1.0.0'
+project.version = '1.0.0' //Make sure to bump this with root project version. Otherwise there is a problem coping sub project jar to docker
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
