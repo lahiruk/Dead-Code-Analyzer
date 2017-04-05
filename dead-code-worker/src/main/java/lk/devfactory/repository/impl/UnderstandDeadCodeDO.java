@@ -42,6 +42,7 @@ public class UnderstandDeadCodeDO implements DeadCodeDO {
 			detectPvtDeadFuncParams(db, deadCodeList);
 		} catch (UnderstandException e) {
 			log.error("Failed execute analyse :" + e.getMessage());
+			throw new RuntimeException("Failed execute analyse :",e);
 		} finally {
 			if (db != null) {
 				db.close();
