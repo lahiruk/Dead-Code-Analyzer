@@ -42,7 +42,7 @@ public class RepositoryController {
     	body = repository.add(uuid, body);
     	log.info("Repository added for : "+ body + " and uuid is " + uuid);
         return new ResponseContext()
-                .status(Status.OK)
+                .status(Status.CREATED)
                 .entity(body);
     }
     
@@ -93,6 +93,6 @@ public class RepositoryController {
     	
     	repository.remove(UUIDGenerator.get(id));
     	log.info("Id of the repo removed "+" is "+ id);
-        return new ResponseContext().status(Status.OK);
+        return new ResponseContext().status(Status.NO_CONTENT);
     }
 }

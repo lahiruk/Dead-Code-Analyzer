@@ -38,9 +38,6 @@ public class GitZipJavaProjectRepositoryDOTests extends SystemPropertyTestSuppor
 	@MockBean
 	RepositoryDS<UUID, Repository, String> repositoryDS;
 	
-//	@MockBean
-//	DeadCodeDO deadCodeDO;
-	
 	@MockBean
 	SystemProcess sp;
 	
@@ -63,12 +60,13 @@ public class GitZipJavaProjectRepositoryDOTests extends SystemPropertyTestSuppor
 
 	@Test
 	public void repositoryAddNew() {
-//		given(this.deadCodeDO.analyse(uuid, originalRepo)).willReturn(deadCodeList);
+		given(this.sp.executeDeeadCodeJar(uuid.toString())).willReturn(deadCodeList);
+		given(this.sp.executeUnd(uuid.toString())).willReturn(true);
 		given(this.repositoryDS.create(uuid, originalRepo)).willReturn(true);
 		
 		Repository savedRepo = reposiotryDO.add(uuid, originalRepo);
 
-		assertSame("deadCodeList is not the same", deadCodeList, savedRepo.getDeadCode());
+		assertSame("deadCodeList is ", deadCodeList, savedRepo.getDeadCode());
 		assertEquals("Status", "completed", savedRepo.getStatus());
 		assertEquals("UUID", uuid.toString(), savedRepo.getId());
 	}

@@ -59,7 +59,7 @@ public class UnderstandDeadCodeDO implements DeadCodeDO {
 		// Get a list of all functions and methods
 		Entity[] clazz = db.ents("class ~unknown ~unresolved");
 		for (Entity e : clazz) {
-			log.info(e.name() + " : " + e.kind());
+			log.debug(e.name() + " : " + e.kind());
 
 			DeadCode dead = new DeadCode();
 			dead.setName(e.name());
@@ -67,7 +67,7 @@ public class UnderstandDeadCodeDO implements DeadCodeDO {
 			// Get a list of all global variables of the class
 			Reference[] varRefs = e.refs("define", "variable", true);
 			for (Reference vRef : varRefs) {
-				log.info(e.name() + " => " + vRef.ent().name() + " [" + vRef.line() + ":" + vRef.column()
+				log.debug(e.name() + " => " + vRef.ent().name() + " [" + vRef.line() + ":" + vRef.column()
 						+ "] > " + vRef.ent().kind().name());
 				
 				if (vRef.ent().kind().name().contains("Variable")) {
@@ -75,7 +75,7 @@ public class UnderstandDeadCodeDO implements DeadCodeDO {
 					if (!dead.getGlobalVariables().contains(gloVar)) {//Just to check global is already added. Potentially slow
 						dead.getGlobalVariables().add(gloVar);
 					} else {
-						log.info("Some issue here in global var list");
+						log.debug("Some issue here in global var list");
 					}
 				} 
 				
@@ -84,7 +84,7 @@ public class UnderstandDeadCodeDO implements DeadCodeDO {
 			// Get a list of all functions and methods of class
 			Reference[] methodRefs = e.refs("define", "method", true);
 			for (Reference mRef : methodRefs) {
-				log.info(e.name() + " =>^ " + mRef.ent().name() + " [" + mRef.line() + ":" + mRef.column()
+				log.debug(e.name() + " =>^ " + mRef.ent().name() + " [" + mRef.line() + ":" + mRef.column()
 						+ "] > " + mRef.ent().kind().name());
 				
 				Function func = null;
@@ -94,20 +94,20 @@ public class UnderstandDeadCodeDO implements DeadCodeDO {
 					if (!dead.getFunctions().contains(func)) { //Just to check function is already added. Potentially slow
 						dead.getFunctions().add(func);
 					} else {
-						log.info("Some issue here in function list");
+						log.debug("Some issue here in function list");
 					}
 
 					// Get a list of all method variables
 					Reference[] localVarRefs = mRef.ent().refs("define", "Variable Parameter", true);
 					for (Reference lVRef : localVarRefs) {
-						log.info(mRef.ent().name() + " =>* " + lVRef.ent().name() + " [" + lVRef.line() + ":"
+						log.debug(mRef.ent().name() + " =>* " + lVRef.ent().name() + " [" + lVRef.line() + ":"
 								+ lVRef.column() + "] > " + lVRef.ent().kind().name());
 						if (lVRef.ent().kind().name().contains("Parameter")) { 
 							FunctionParameter param = new FunctionParameter(lVRef.ent().name(), lVRef.line(), lVRef.column());
 							if (!func.getParameters().contains(param)) { //Just to check parameter is already added. Potentially slow
 								func.getParameters().add(param);
 							} else {
-								log.info("Some issue here in function parameter list");
+								log.debug("Some issue here in function parameter list");
 							}
 						}
 						
@@ -116,7 +116,7 @@ public class UnderstandDeadCodeDO implements DeadCodeDO {
 							if (!func.getVariables().contains(var)) { //Just to check parameter is already added. Potentially slow
 								func.getVariables().add(var);
 							} else {
-								log.info("Some issue here local variable list");
+								log.debug("Some issue here local variable list");
 							}
 						}						
 					}
@@ -133,12 +133,12 @@ public class UnderstandDeadCodeDO implements DeadCodeDO {
 		
 		deadCodeList.forEach(dead -> {
 			for (Entity e : funcs) {
-				log.info(e.name() + " : " + e.kind());
+				log.debug(e.name() + " : " + e.kind());
 				
 				// Get a list of all functions and methods has invocations
 				Reference[] callRefs = e.refs("callby", null, true);
 				for (Reference pRef : callRefs) {
-					log.info(
+					log.debug(
 							e.name() + " =>$ " + pRef.ent().name() + " [" + pRef.line() + ":" + pRef.column() + "]");
 					//Remove used functions
 					dead.getFunctions().remove(new Function(e.name(),0,0,null,null));
@@ -153,12 +153,12 @@ public class UnderstandDeadCodeDO implements DeadCodeDO {
 
 		deadCodeList.forEach(dead -> {
 			for (Entity e : vars) {
-				log.info(e.name() + " : " + e.kind());
+				log.debug(e.name() + " : " + e.kind());
 	
 				// Get a list of all used variables
 				Reference[] useByRefs = e.refs("Useby", null, true);
 				for (Reference pRef : useByRefs) {
-					log.info(
+					log.debug(
 							e.name() + " => " + pRef.ent().name() + " [" + pRef.line() + ":" + pRef.column() + "]");
 					
 					//Remove used Global variables
@@ -179,18 +179,18 @@ public class UnderstandDeadCodeDO implements DeadCodeDO {
 
 		deadCodeList.forEach(dead -> {
 			for (Entity e : funcs) {
-				log.info(e.name() + " : " + e.kind());
+				log.debug(e.name() + " : " + e.kind());
 	
 				// Get a list of all params of functions and methods
 				Reference[] paramterRefs = e.refs("define", "parameter", true);
 				for (Reference pRef : paramterRefs) {
 					e = pRef.ent();
-					log.info("Param => " + e.name());
+					log.debug("Param => " + e.name());
 	
 					// Get a list of all used params
 					Reference[] useByRefs = e.refs("Useby", null, true);
 					for (Reference uRef : useByRefs) {
-						log.info(e.name() + " =>+ " + uRef.ent().name() + " [" + uRef.line() + ":"
+						log.debug(e.name() + " =>+ " + uRef.ent().name() + " [" + uRef.line() + ":"
 								+ uRef.column() + "]");
 						
 						//Remove used function parameters

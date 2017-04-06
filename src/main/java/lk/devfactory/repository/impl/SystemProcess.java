@@ -62,7 +62,8 @@ public class SystemProcess {
 		try {
 			log.info("Start executing dead code analyser jar .." + repoId);
 			ProcessExecutor exec = new ProcessExecutor().command("java","-Ddistribution="+SystemConst.DIST,
-							"-DtmpPath="+SystemConst.TMP_PATH, "-jar","dead-code-worker-1.0.0.jar",repoId);
+							"-DtmpPath="+SystemConst.TMP_PATH, "-jar",SystemConst.TMP_PATH + File.separator + 
+							"dead-code-worker-1.0.0.jar",repoId);
 			exec.environment("PATH", ".:" + System.getenv("PATH"));
 			ProcessResult result =	exec.readOutput(true).execute();
 			String output = result.outputUTF8();

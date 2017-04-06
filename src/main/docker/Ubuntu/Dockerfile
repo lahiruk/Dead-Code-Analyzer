@@ -19,7 +19,7 @@ VOLUME /tmp
 RUN mkdir /tmp/scitools
 COPY ["scitools","/tmp/scitools"]
 ADD dead-code-analyzer-1.0.0.jar app.jar
-ADD dead-code-worker-1.0.0.jar dead-code-worker-1.0.0.jar
+ADD dead-code-worker-1.0.0.jar /tmp/dead-code-worker-1.0.0.jar
 RUN sh -c 'touch /app.jar'
 ENV JAVA_OPTS=""
 ENV PATH="$PATH:/tmp/scitools/bin/linux64/"

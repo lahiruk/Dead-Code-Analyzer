@@ -133,9 +133,11 @@ definitions:
         type: string
         description: Repository status
         enum:
-          - available
           - pending
-          - sold
+          - downloading
+          - analysing
+          - completed
+          - failed
   DeadCode:
     properties:
       id:
