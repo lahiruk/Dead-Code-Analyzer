@@ -9,7 +9,8 @@ info:
   license:
     name: Apache 2.0
     url: "http://www.apache.org/licenses/LICENSE-2.0.html"
-basePath: /api-lahiru/v1
+host: "localhost:8080"
+basePath: /v1
 tags:
   - name: repository
     description: Everything about your Project Repo's Dead Code
@@ -36,8 +37,8 @@ paths:
           schema:
             $ref: "#/definitions/Repository"
       responses:
-        "200":
-          description: successful operation
+        "201":
+          description: Successful operation
           schema:
             $ref: "#/definitions/Repository"
         "405":
@@ -55,7 +56,7 @@ paths:
         - application/json
       responses:
         "200":
-          description: successful operation
+          description: Successful operation
           schema:
             type: array
             items:
@@ -85,8 +86,6 @@ paths:
           description: successful operation
           schema:
             $ref: "#/definitions/Repository"
-        "400":
-          description: Invalid ID supplied
         "404":
           description: Repository not found
     delete:
@@ -107,12 +106,8 @@ paths:
           required: true
           type: string
       responses:
-        "200":
+        "204":
           description: successful operation
-          schema:
-            $ref: "#/definitions/Repository"
-        "400":
-          description: Invalid ID supplied
         "404":
           description: Repository not found
 definitions:
@@ -128,7 +123,7 @@ definitions:
           $ref: "#/definitions/DeadCode"
       url:
         type: string
-        example: https://github.com/owner/project.git
+        example: https://github.com/owner/project
       status:
         type: string
         description: Repository status

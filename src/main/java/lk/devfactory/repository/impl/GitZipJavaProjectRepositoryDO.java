@@ -41,39 +41,43 @@ public class GitZipJavaProjectRepositoryDO implements RepositoryDO {
 	public Repository add(UUID id, Repository repository) {
 		repository.setStatus("pending");
 		log.info("Change reposioty status " + repository);
-		boolean existing = !repositoryDS.create(id, repository);
-		//TODO Cannot add already existing originalRepo with this check.
-		//TODO need to make following block of code in if condition concurrent
-		if (!existing) {
-			repository.setStatus("downloading");
-			log.info("Change reposioty status " + repository);
-			String repoId = id.toString();
-			pd.download(repository.getUrl(), repoId);
-			//TODO Handle no originalRepo found and propagate the exception back from here
-			//TODO Change the default status list in swagger enum
-			ep.extract(repoId);
-			pj.renameProjectFile(repository.getUrl(), repoId);
-			
-			repository.setStatus("analysing");
-			log.info("Change reposioty status " + repository);
-			
-			if (!sp.executeUnd(repoId)) {
-				repositoryDS.remove(id);
-				repository.setStatus("failed");
+		try {
+			boolean existing = !repositoryDS.create(id, repository); //TODO The repository object is not thread safe because it is shared between thread from the cache
+			//TODO Cannot add already existing originalRepo with this check.
+			//TODO need to make following block of code in if condition concurrent
+			if (!existing) {
+				repository.setStatus("downloading");
 				log.info("Change reposioty status " + repository);
-				return repository;
-			}
-			sp.executeUndAnalyse(repoId);
-			
-			List<DeadCode> deadCodeList =sp.executeDeeadCodeJar(repoId);
+				String repoId = id.toString();
+	
+				pd.download(repository.getUrl(), repoId);
 
-			repository.setDeadCode(deadCodeList);
-			repositoryDS.update(id, repository);
-			repository.setStatus("completed");
+				//TODO Handle no originalRepo found and propagate the exception back from here
+				//TODO Change the default status list in swagger enum
+				ep.extract(repoId);
+				pj.renameProjectFile(repository.getUrl(), repoId);
+				
+				repository.setStatus("analysing");
+				log.info("Change reposioty status " + repository);
+				
+				sp.executeUnd(repoId);
+				sp.executeUndAnalyse(repoId);
+				
+				List<DeadCode> deadCodeList =sp.executeDeeadCodeJar(repoId);
+	
+				repository.setDeadCode(deadCodeList);
+				repositoryDS.update(id, repository);
+				repository.setStatus("completed");
+				log.info("Change reposioty status " + repository);
+				repository.setId(repoId);
+			} else {
+				repository = repositoryDS.findByNonIdUniqueKey(repository.getUrl());
+			}
+		} catch (RuntimeException re) {
+			repositoryDS.remove(id);
+			repository.setStatus("failed");
 			log.info("Change reposioty status " + repository);
-			repository.setId(repoId);
-		} else {
-			repository = repositoryDS.findByNonIdUniqueKey(repository.getUrl());
+			throw re;
 		}
 		return repository;
 	}

@@ -61,7 +61,6 @@ public class GitZipJavaProjectRepositoryDOTests extends SystemPropertyTestSuppor
 	@Test
 	public void repositoryAddNew() {
 		given(this.sp.executeDeeadCodeJar(uuid.toString())).willReturn(deadCodeList);
-		given(this.sp.executeUnd(uuid.toString())).willReturn(true);
 		given(this.repositoryDS.create(uuid, originalRepo)).willReturn(true);
 		
 		Repository savedRepo = reposiotryDO.add(uuid, originalRepo);

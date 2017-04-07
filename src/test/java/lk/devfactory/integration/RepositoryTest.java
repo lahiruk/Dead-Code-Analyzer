@@ -38,7 +38,7 @@ public class RepositoryTest extends SystemPropertyTestSupport {
     	ApiClient client = new ApiClient();
     	client.getHttpClient().setReadTimeout(0, TimeUnit.MILLISECONDS);
     	client.getHttpClient().setWriteTimeout(0, TimeUnit.MILLISECONDS);
-    	client.setBasePath("http://localhost:"+ randomServerPort +"/api-lahiru/v1");
+    	client.setBasePath("http://localhost:"+ randomServerPort +"/api/v1");
     	
     	api = new RepositoryApi(client);
     	

@@ -18,6 +18,7 @@ import io.swagger.inflector.models.ApiError;
 import io.swagger.inflector.models.RequestContext;
 import io.swagger.inflector.models.ResponseContext;
 import io.swagger.inflector.utils.ApiException;
+import lk.devfactory.exception.RepositoryNotFoundException;
 import lk.devfactory.models.Repository;
 import lk.devfactory.repository.RepositoryDO;
 import lk.devfactory.repository.impl.GitZipJavaProjectRepositoryDO;
@@ -39,7 +40,15 @@ public class RepositoryController {
     public ResponseContext addRepo(RequestContext request, Repository body) {
     	UUID uuid = UUIDGenerator.get();
     	log.info("Id for repo : "+ body + " is "+uuid);
-    	body = repository.add(uuid, body);
+    	try {
+			body = repository.add(uuid, body);
+		} catch (RepositoryNotFoundException e) {
+    		log.info("Unable to find git repository "+body);
+    		ApiError error = new ApiError();
+    		error.setCode(HttpServletResponse.SC_NOT_FOUND);
+    		error.setMessage("Unable to find git repository");
+    		throw new ApiException(error);
+		}
     	log.info("Repository added for : "+ body + " and uuid is " + uuid);
         return new ResponseContext()
                 .status(Status.CREATED)
