@@ -24,9 +24,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 
 
-public class Repository {
+public class Repository extends RepositoryBase{
     private String id;
-    private String url;
     private List<DeadCode> deadCode;
     private String status;
     private OffsetDateTime created = OffsetDateTime.now();
@@ -71,11 +70,11 @@ public class Repository {
 
     @JsonProperty
     public String getUrl() {
-        return url;
+        return super.getUrl();
     }
 
     public void setUrl(String name) {
-        this.url = name;
+        super.setUrl(name);
     }
 
     public List<DeadCode> getDeadCode() {

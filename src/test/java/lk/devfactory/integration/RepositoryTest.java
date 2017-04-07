@@ -21,6 +21,7 @@ import io.swagger.client.ApiClient;
 import io.swagger.client.ApiException;
 import io.swagger.client.api.RepositoryApi;
 import io.swagger.client.model.Repository;
+import io.swagger.client.model.RepositoryBase;
 import lk.devfactory.SystemPropertyTestSupport;
 
 @RunWith(SpringRunner.class)
@@ -61,11 +62,11 @@ public class RepositoryTest extends SystemPropertyTestSupport {
 
 	@Test
     public void addRepositorySuccessfullPath() {	
-    	repository = new Repository();
-    	repository.setUrl("https://github.com/lahiruk/exam-conductor");
+		RepositoryBase repositoryBase = new RepositoryBase();
+    	repositoryBase.setUrl("https://github.com/lahiruk/exam-conductor");
     	
     	try {
-			repository = api.addRepo(repository);
+			repository = api.addRepo(repositoryBase);
 			
 			while (!Repository.StatusEnum.COMPLETED.equals(repository.getStatus())) {
 				log.info("Sleeping 5 seconds till process state change to completed from "+repository.getStatus());

@@ -28,6 +28,7 @@ import java.io.IOException;
 
 
 import io.swagger.client.model.Repository;
+import io.swagger.client.model.RepositoryBase;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -55,7 +56,7 @@ public class RepositoryApi {
     }
 
     /* Build call for addRepo */
-    private com.squareup.okhttp.Call addRepoCall(Repository body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    private com.squareup.okhttp.Call addRepoCall(RepositoryBase body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         Object localVarPostBody = body;
         
         // create path and map variables
@@ -96,7 +97,7 @@ public class RepositoryApi {
     }
     
     @SuppressWarnings("rawtypes")
-    private com.squareup.okhttp.Call addRepoValidateBeforeCall(Repository body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
+    private com.squareup.okhttp.Call addRepoValidateBeforeCall(RepositoryBase body, final ProgressResponseBody.ProgressListener progressListener, final ProgressRequestBody.ProgressRequestListener progressRequestListener) throws ApiException {
         
         // verify the required parameter 'body' is set
         if (body == null) {
@@ -120,7 +121,7 @@ public class RepositoryApi {
      * @return Repository
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public Repository addRepo(Repository body) throws ApiException {
+    public Repository addRepo(RepositoryBase body) throws ApiException {
         ApiResponse<Repository> resp = addRepoWithHttpInfo(body);
         return resp.getData();
     }
@@ -132,7 +133,7 @@ public class RepositoryApi {
      * @return ApiResponse&lt;Repository&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public ApiResponse<Repository> addRepoWithHttpInfo(Repository body) throws ApiException {
+    public ApiResponse<Repository> addRepoWithHttpInfo(RepositoryBase body) throws ApiException {
         com.squareup.okhttp.Call call = addRepoValidateBeforeCall(body, null, null);
         Type localVarReturnType = new TypeToken<Repository>(){}.getType();
         return apiClient.execute(call, localVarReturnType);
@@ -146,7 +147,7 @@ public class RepositoryApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      */
-    public com.squareup.okhttp.Call addRepoAsync(Repository body, final ApiCallback<Repository> callback) throws ApiException {
+    public com.squareup.okhttp.Call addRepoAsync(RepositoryBase body, final ApiCallback<Repository> callback) throws ApiException {
 
         ProgressResponseBody.ProgressListener progressListener = null;
         ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
@@ -465,25 +466,22 @@ public class RepositoryApi {
      * Delete repository by ID
      * Returns a dead code analysis
      * @param repositoryId ID of repository to return (required)
-     * @return Repository
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public Repository removeRepo(String repositoryId) throws ApiException {
-        ApiResponse<Repository> resp = removeRepoWithHttpInfo(repositoryId);
-        return resp.getData();
+    public void removeRepo(String repositoryId) throws ApiException {
+        removeRepoWithHttpInfo(repositoryId);
     }
 
     /**
      * Delete repository by ID
      * Returns a dead code analysis
      * @param repositoryId ID of repository to return (required)
-     * @return ApiResponse&lt;Repository&gt;
+     * @return ApiResponse&lt;Void&gt;
      * @throws ApiException If fail to call the API, e.g. server error or cannot deserialize the response body
      */
-    public ApiResponse<Repository> removeRepoWithHttpInfo(String repositoryId) throws ApiException {
+    public ApiResponse<Void> removeRepoWithHttpInfo(String repositoryId) throws ApiException {
         com.squareup.okhttp.Call call = removeRepoValidateBeforeCall(repositoryId, null, null);
-        Type localVarReturnType = new TypeToken<Repository>(){}.getType();
-        return apiClient.execute(call, localVarReturnType);
+        return apiClient.execute(call);
     }
 
     /**
@@ -494,7 +492,7 @@ public class RepositoryApi {
      * @return The request call
      * @throws ApiException If fail to process the API call, e.g. serializing the request body object
      */
-    public com.squareup.okhttp.Call removeRepoAsync(String repositoryId, final ApiCallback<Repository> callback) throws ApiException {
+    public com.squareup.okhttp.Call removeRepoAsync(String repositoryId, final ApiCallback<Void> callback) throws ApiException {
 
         ProgressResponseBody.ProgressListener progressListener = null;
         ProgressRequestBody.ProgressRequestListener progressRequestListener = null;
@@ -516,8 +514,7 @@ public class RepositoryApi {
         }
 
         com.squareup.okhttp.Call call = removeRepoValidateBeforeCall(repositoryId, progressListener, progressRequestListener);
-        Type localVarReturnType = new TypeToken<Repository>(){}.getType();
-        apiClient.executeAsync(call, localVarReturnType, callback);
+        apiClient.executeAsync(call, callback);
         return call;
     }
 }
