@@ -129,10 +129,19 @@ definitions:
         description: Repository status
         enum:
           - pending
-          - downloading
+          - preparing
           - analysing
           - completed
           - failed
+      created:
+        type: string
+        format: date-time
+      preparedOn:
+        type: string
+        format: date-time
+      completedOn:
+        type: string
+        format: date-time
   DeadCode:
     properties:
       id:

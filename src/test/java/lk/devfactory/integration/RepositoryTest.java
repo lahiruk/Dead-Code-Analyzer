@@ -10,6 +10,8 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
@@ -26,6 +28,8 @@ import lk.devfactory.SystemPropertyTestSupport;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class RepositoryTest extends SystemPropertyTestSupport {
 
+	static private final Logger log = LoggerFactory.getLogger(RepositoryTest.class);
+	
     @LocalServerPort
     int randomServerPort;
     
@@ -62,7 +66,13 @@ public class RepositoryTest extends SystemPropertyTestSupport {
     	
     	try {
 			repository = api.addRepo(repository);
-		} catch (ApiException e) {
+			
+			while (!Repository.StatusEnum.COMPLETED.equals(repository.getStatus())) {
+				log.info("Sleeping 5 seconds till process state change to completed from "+repository.getStatus());
+				Thread.sleep(5000);
+				repository = loadRepositoryIfExists();
+			}
+		} catch (ApiException | InterruptedException e) {
 			fail(e.getCause().getMessage());
 		}
     	
