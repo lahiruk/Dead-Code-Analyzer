@@ -23,7 +23,7 @@ public class SystemProcess {
 	
 	static private final Logger log = LoggerFactory.getLogger(SystemProcess.class);
 	
-	protected boolean executeUnd(String repoId) {
+	protected void executeUnd(String repoId) {
 		try {
 			String prog = SystemConst.TMP_PATH+ File.separator + SystemConst.DIST + File.separator+"und";
 			String absPath = SystemConst.TMP_PATH + File.separator + repoId + File.separator;
@@ -36,7 +36,9 @@ public class SystemProcess {
 			String output = result.outputUTF8();
 			log.info(exec.getEnvironment().get("PATH"));
 			log.info("Output from cmd:" + output);
-			return output.startsWith("Files added");
+			if (!output.startsWith("Files added")) {
+				throw new RuntimeException("Failed execute udb command build project udb for:"+repoId);
+			}
 		} catch (InvalidExitValueException | TimeoutException | IOException |InterruptedException e)  {
 			throw new RuntimeException("Failed execute udb command build project udb for:"+repoId, e);
 		}  
@@ -62,7 +64,8 @@ public class SystemProcess {
 		try {
 			log.info("Start executing dead code analyser jar .." + repoId);
 			ProcessExecutor exec = new ProcessExecutor().command("java","-Ddistribution="+SystemConst.DIST,
-							"-DtmpPath="+SystemConst.TMP_PATH, "-jar","dead-code-worker-1.0.0.jar",repoId);
+							"-DtmpPath="+SystemConst.TMP_PATH, "-jar",SystemConst.TMP_PATH + File.separator + 
+							"dead-code-worker-1.0.0.jar",repoId);
 			exec.environment("PATH", ".:" + System.getenv("PATH"));
 			ProcessResult result =	exec.readOutput(true).execute();
 			String output = result.outputUTF8();

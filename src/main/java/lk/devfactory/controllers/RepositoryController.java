@@ -18,7 +18,9 @@ import io.swagger.inflector.models.ApiError;
 import io.swagger.inflector.models.RequestContext;
 import io.swagger.inflector.models.ResponseContext;
 import io.swagger.inflector.utils.ApiException;
+import lk.devfactory.exception.RepositoryNotFoundException;
 import lk.devfactory.models.Repository;
+import lk.devfactory.models.RepositoryBase;
 import lk.devfactory.repository.RepositoryDO;
 import lk.devfactory.repository.impl.GitZipJavaProjectRepositoryDO;
 import lk.devfactory.store.impl.UUID;
@@ -36,14 +38,24 @@ public class RepositoryController {
     RepositoryDO repository;
 
     //TODO: Handle 405 invalid input git url
-    public ResponseContext addRepo(RequestContext request, Repository body) {
+    public ResponseContext addRepo(RequestContext request, RepositoryBase body) {
     	UUID uuid = UUIDGenerator.get();
     	log.info("Id for repo : "+ body + " is "+uuid);
-    	body = repository.add(uuid, body);
+    	Repository repo = new Repository();
+    	repo.setUrl(body.getUrl());
+    	try {
+    		repo = repository.add(uuid, repo);
+		} catch (RepositoryNotFoundException | IllegalArgumentException e) {
+    		log.info("Unable to find git repository "+body);
+    		ApiError error = new ApiError();
+    		error.setCode(HttpServletResponse.SC_NOT_FOUND);
+    		error.setMessage("Unable to find git repository");
+    		throw new ApiException(error);
+		}
     	log.info("Repository added for : "+ body + " and uuid is " + uuid);
         return new ResponseContext()
-                .status(Status.OK)
-                .entity(body);
+                .status(Status.CREATED)
+                .entity(repo);
     }
     
     public ResponseContext findRepositories(RequestContext request) {
@@ -93,6 +105,6 @@ public class RepositoryController {
     	
     	repository.remove(UUIDGenerator.get(id));
     	log.info("Id of the repo removed "+" is "+ id);
-        return new ResponseContext().status(Status.OK);
+        return new ResponseContext().status(Status.NO_CONTENT);
     }
 }

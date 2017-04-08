@@ -3,6 +3,8 @@ modelPackage: lk.devfactory.models
 swaggerUrl: swagger.yaml
 exceptionMappers: ['io.swagger.inflector.utils.DefaultExceptionMapper']
 inputValidators: ['io.swagger.inflector.validators.DefaultValidator']
+#validatePayloads: true
+rootPath: '/api'
 modelMappings:
   Repository: lk.devfactory.models.Repository
 # loads all by default, or pick and choose

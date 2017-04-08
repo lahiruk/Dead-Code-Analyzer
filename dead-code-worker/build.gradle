@@ -43,6 +43,13 @@ repositories {
 
 bootRepackage {
     mainClass = 'lk.devfactory.DeadCodeApplication'
+    
+    doLast { //Copies the jar file to temp path for development testing
+	    copy {
+    		from jar.archivePath
+        	into "$tempPath"
+        }
+    }
 }
 
 springBoot  {

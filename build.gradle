@@ -50,7 +50,7 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 }
 
 task copySciTools(type: Copy) {
-     from scitoolsPath
+     from "$tempPath/scitools"
      into "$rootProject.buildDir/docker/scitools"
 }
 
@@ -84,7 +84,7 @@ task buildDocker(type: Docker, dependsOn: [":dead-code-worker:bootRepackage", bo
       into stageDir
     }
     copy { //For ubuntu docker
-      from scitoolsPath
+      from "$tempPath/scitools"
       into "$stageDir/scitools"
     }
   }
@@ -107,11 +107,14 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-actuator')
 	compile('org.springframework.boot:spring-boot-starter-jersey')
     compile('org.springframework.boot:spring-boot-starter-web')
+    
+    testCompile('io.swagger:swagger-annotations:1.5.8')
+    testCompile('com.squareup.okhttp:okhttp:2.7.5')
+    testCompile('com.squareup.okhttp:logging-interceptor:2.7.5')
+    testCompile('com.google.code.gson:gson:2.6.2')
+    testCompile('joda-time:joda-time:2.9.3')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	
-	compile files("/Applications/Understand.app/Contents/MacOS/Java/com.scitools.understand.plugin_1.1.3.jar")
+	compile files("$tempPath/scitools/bin/linux64/Java/com.scitools.understand.plugin_1.1.3.jar")
 	compile('org.zeroturnaround:zt-exec:1.9')
-	
-	compile project(':dead-code-worker')
-
 }

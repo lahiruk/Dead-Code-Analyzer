@@ -1,6 +1,7 @@
 package lk.devfactory.repository.impl;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.util.FileCopyUtils;
 
+import lk.devfactory.exception.RepositoryNotFoundException;
 import lk.devfactory.utility.GitUrlProcessor;
 import lk.devfactory.utility.SystemConst;
 
@@ -35,6 +37,8 @@ public class ProjectDownload {
 			FileCopyUtils.copy(in, out);
 			out.close();
 			log.debug("Downloading file completed for " + url.getPath());
+		} catch (FileNotFoundException nf) {
+    		throw new RepositoryNotFoundException("Unable to find any git repository with "+gitUrl, nf);
 		} catch (IOException e) {
 			throw new RuntimeException("Failed to download repo:"+repoId, e);
 		} 

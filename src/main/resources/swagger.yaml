@@ -9,7 +9,8 @@ info:
   license:
     name: Apache 2.0
     url: "http://www.apache.org/licenses/LICENSE-2.0.html"
-basePath: /api-lahiru/v1
+host: "webserver.devfactory.com:15560"
+basePath: /v1
 tags:
   - name: repository
     description: Everything about your Project Repo's Dead Code
@@ -34,12 +35,14 @@ paths:
           description: Repository object that needs to be added to the analyse
           required: true
           schema:
-            $ref: "#/definitions/Repository"
+            $ref: "#/definitions/RepositoryBase"
       responses:
-        "200":
-          description: successful operation
+        "201":
+          description: Successful operation
           schema:
             $ref: "#/definitions/Repository"
+        "400":
+          description: Bad request
         "405":
           description: Invalid input
   /repository/all:
@@ -51,15 +54,16 @@ paths:
       description: ""
       operationId: findRepositories
       produces:
-        - application/xml
         - application/json
       responses:
         "200":
-          description: successful operation
+          description: Successful operation
           schema:
             type: array
             items:
               $ref: "#/definitions/Repository"
+        "400":
+          description: Bad request
         "404":
           description: Repositories not found
   "/repository/{repositoryId}":
@@ -86,7 +90,7 @@ paths:
           schema:
             $ref: "#/definitions/Repository"
         "400":
-          description: Invalid ID supplied
+          description: Bad request
         "404":
           description: Repository not found
     delete:
@@ -107,15 +111,20 @@ paths:
           required: true
           type: string
       responses:
-        "200":
-          description: successful operation
-          schema:
-            $ref: "#/definitions/Repository"
+        "204":
+          description: No content
         "400":
-          description: Invalid ID supplied
+          description: Bad request
         "404":
           description: Repository not found
 definitions:
+  RepositoryBase:
+    required:
+      - url
+    properties:
+      url:
+        type: string
+        example: https://github.com/owner/project
   Repository:
     required:
       - url
@@ -128,14 +137,25 @@ definitions:
           $ref: "#/definitions/DeadCode"
       url:
         type: string
-        example: https://github.com/owner/project.git
+        example: https://github.com/owner/project
       status:
         type: string
         description: Repository status
         enum:
-          - available
           - pending
-          - sold
+          - preparing
+          - analysing
+          - completed
+          - failed
+      created:
+        type: string
+        format: date-time
+      preparedOn:
+        type: string
+        format: date-time
+      completedOn:
+        type: string
+        format: date-time
   DeadCode:
     properties:
       id:

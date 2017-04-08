@@ -24,12 +24,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 
 
-public class Repository {
+public class Repository extends RepositoryBase{
     private String id;
-    private String url;
     private List<DeadCode> deadCode;
     private String status;
     private OffsetDateTime created = OffsetDateTime.now();
+    private OffsetDateTime preparedOn;
+    private OffsetDateTime completedOn;
 
     @JsonProperty
     public OffsetDateTime getCreated() {
@@ -41,6 +42,24 @@ public class Repository {
     }
 
     @JsonProperty
+    public OffsetDateTime getPreparedOn() {
+		return preparedOn;
+	}
+
+	public void setPreparedOn(OffsetDateTime preparedOn) {
+		this.preparedOn = preparedOn;
+	}
+
+	@JsonProperty
+	public OffsetDateTime getCompletedOn() {
+		return completedOn;
+	}
+
+	public void setCompletedOn(OffsetDateTime completedOn) {
+		this.completedOn = completedOn;
+	}
+
+	@JsonProperty
     public String getId() {
         return id;
     }
@@ -51,11 +70,11 @@ public class Repository {
 
     @JsonProperty
     public String getUrl() {
-        return url;
+        return super.getUrl();
     }
 
     public void setUrl(String name) {
-        this.url = name;
+        super.setUrl(name);
     }
 
     public List<DeadCode> getDeadCode() {
@@ -67,7 +86,7 @@ public class Repository {
 	}
 
 	@JsonProperty("status")
-    @ApiModelProperty(value = "Repository status in the store", allowableValues = "pending,downloading,analysing,completed,failed")
+    @ApiModelProperty(value = "Repository status in the store", allowableValues = "pending,preparing,analysing,completed,failed")
     public String getStatus() {
         return status;
     }
