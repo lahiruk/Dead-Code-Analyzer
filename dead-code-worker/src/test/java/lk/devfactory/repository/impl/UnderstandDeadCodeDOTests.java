@@ -66,6 +66,7 @@ public class UnderstandDeadCodeDOTests extends SystemPropertyTestSupport {
 			List<Function> expFun = new ArrayList<Function>();
 			expFun.add(new Function("Application.main", 0, 0, null, null));
 			expFun.add(new Function("Application.unusedFunction", 0, 0, null, null));
+			expFun.add(new Function("Application.usedFunction", 0, 0, null, null));
 			expFun.add(new Function("Application.protectedFunction", 0, 0, null, null));
 			expFun.add(new Function("Application.returnFunction", 0, 0, null, null));
 
@@ -74,8 +75,10 @@ public class UnderstandDeadCodeDOTests extends SystemPropertyTestSupport {
 			dead.getFunctions().forEach(fun -> {
 				//System.out.println("Function:");
 				//System.out.println(fun + "[" + fun.getLineNo() + "," + fun.getColumnNo() + "]");
-				assertTrue("lineNo not greater than 0 for "+fun, fun.getLineNo() > 0);
-				assertTrue("columnNonot greater than 0 for "+fun, fun.getColumnNo() > 0);
+				if (!"Application.usedFunction".equals(fun.toString())) {
+					assertTrue("lineNo not greater than 0 for "+fun, fun.getLineNo() > 0);
+					assertTrue("columnNonot greater than 0 for "+fun, fun.getColumnNo() > 0);
+				}
 
 				//System.out.println("Function Parameter:");
 				//System.out.println(fun.getParameters());
@@ -104,6 +107,13 @@ public class UnderstandDeadCodeDOTests extends SystemPropertyTestSupport {
 						
 						assertTrue("lineNo not greater than 0 for "+var, var.getLineNo() > 0);
 						assertTrue("columnNonot greater than 0 for "+var, var.getColumnNo() > 0);
+					});
+				} else if ("Application.usedFunction".equals(fun.toString())) { 
+					fun.getParameters().forEach(param -> {
+						//System.out.println(param + "[" + param.getLineNo() + "," + param.getColumnNo() + "]");
+						
+						assertTrue("lineNo not greater than 0 for "+param, param.getLineNo() > 0);
+						assertTrue("columnNonot greater than 0 for "+param, param.getColumnNo() > 0);
 					});
 				} else {
 					assertTrue("The function " + fun.getName() + " should not have any parameters but has "
