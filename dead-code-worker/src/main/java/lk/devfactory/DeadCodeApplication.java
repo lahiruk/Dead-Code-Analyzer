@@ -13,7 +13,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lk.devfactory.model.DeadCode;
-import lk.devfactory.reposiotry.DeadCodeDO;
+import lk.devfactory.repository.DeadCodeDO;
 import lk.devfactory.repository.impl.UnderstandDeadCodeDO;
 import lk.devfactory.utility.SystemConst;
 

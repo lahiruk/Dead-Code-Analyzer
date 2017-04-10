@@ -19,7 +19,7 @@ import lk.devfactory.model.Function;
 import lk.devfactory.model.FunctionParameter;
 import lk.devfactory.model.GlobalVariable;
 import lk.devfactory.model.LocalVariable;
-import lk.devfactory.reposiotry.DeadCodeDO;
+import lk.devfactory.repository.DeadCodeDO;
 
 @Component
 public class UnderstandDeadCodeDO implements DeadCodeDO {
