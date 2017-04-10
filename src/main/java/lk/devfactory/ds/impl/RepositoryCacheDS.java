@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import lk.devfactory.ds.RepositoryDS;
-import lk.devfactory.models.Repository;
+import lk.devfactory.model.Repository;
 import lk.devfactory.store.Cache;
 import lk.devfactory.store.impl.UUID;
 

@@ -1,4 +1,4 @@
-package lk.devfactory.models;
+package lk.devfactory.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

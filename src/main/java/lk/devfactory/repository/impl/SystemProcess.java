@@ -15,7 +15,7 @@ import org.zeroturnaround.exec.stream.slf4j.Slf4jStream;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import lk.devfactory.models.DeadCode;
+import lk.devfactory.model.DeadCode;
 import lk.devfactory.utility.SystemConst;
 
 //TODO: Add javadocs.

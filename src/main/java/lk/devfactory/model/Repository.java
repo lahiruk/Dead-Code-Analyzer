@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package lk.devfactory.models;
+package lk.devfactory.model;
 
 import java.time.OffsetDateTime;
 import java.util.List;
