@@ -6,7 +6,7 @@ inputValidators: ['io.swagger.inflector.validators.DefaultValidator']
 #validatePayloads: true
 rootPath: '/api'
 modelMappings:
-  Repository: lk.devfactory.models.Repository
+  Repository: lk.devfactory.model.Repository
 # loads all by default, or pick and choose
 entityProcessors:
   - json
