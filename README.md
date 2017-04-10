@@ -20,8 +20,10 @@ Starting using the feature at Docker swam sing following urls:
 
 or by deploying the package from [github](https://github.com/lahiruk/dead-code-analyzer)
 
-> 'git https://github.com/lahiruk/dead-code-analyzer.git'
+```
+> git https://github.com/lahiruk/dead-code-analyzer.git
 > gradlew clean bootRepackage
 > java -Ddistribution='MacOS' -DtmpPath='/Users/lahiru/tmp' -jar Development/workspace/dead-code-analyzer/build/libs/dead-code-analyzer-1.0.0.jar
+```
 
 At present the software is only certified to work on Linux and MacOS operating system flavors. Specify -Ddistribution='MacOS' for mac and nothing for linux. Specify -DtmpPath if the user.home is not root.
