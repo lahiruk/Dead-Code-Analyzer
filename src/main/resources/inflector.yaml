@@ -1,5 +1,5 @@
 controllerPackage: lk.devfactory.controllers
-modelPackage: lk.devfactory.models
+modelPackage: lk.devfactory.model
 swaggerUrl: swagger.yaml
 exceptionMappers: ['io.swagger.inflector.utils.DefaultExceptionMapper']
 inputValidators: ['io.swagger.inflector.validators.DefaultValidator']
