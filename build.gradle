@@ -115,6 +115,19 @@ artifacts {
 }
 
 project (':dead-code-worker'){
+    configurations {
+        common
+    }
+
+    task commonJar(type: Jar) {
+        baseName = 'dead-code-common'
+        dependsOn classes
+        from sourceSets.main.output
+        include('lk/devfactory/model/**')
+    }
+    artifacts {
+        common commonJar
+    }
 	dependencies {
 		compile('com.fasterxml.jackson.core:jackson-annotations')
 	    compile('com.fasterxml.jackson.core:jackson-databind')
@@ -141,7 +154,7 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-jersey')
     compile('org.springframework.boot:spring-boot-starter-web')
     compile('org.zeroturnaround:zt-exec:1.9')
-//    compile project(':dead-code-worker')
+    compile project(path: ':dead-code-worker', configuration: 'common')
     
     testCompile('io.swagger:swagger-annotations:1.5.8')
     testCompile('com.squareup.okhttp:okhttp:2.7.5')
