@@ -39,7 +39,6 @@ public class GitZipJavaProjectRepositoryDO implements RepositoryDO {
 	ProjectDownload pd;
 
 	@Override
-	//TODO replace Repository.getID to UUID type. Then remove this additional UUID parameter
 	public Repository add(UUID id, final Repository repository) {
 		
 		if (!StringUtils.isNotEmpty(repository.getUrl())) {
@@ -52,10 +51,9 @@ public class GitZipJavaProjectRepositoryDO implements RepositoryDO {
 		repository.setStatus("pending");
 		log.info("Change reposioty status " + repository);
 
+		//Caution The repository object is not thread safe because it is shared between thread from the cache
+		boolean existing = !repositoryDS.create(id, repository); 
 
-		boolean existing = !repositoryDS.create(id, repository); //TODO The repository object is not thread safe because it is shared between thread from the cache
-		//TODO Cannot add already existing originalRepo with this check.
-		//TODO need to make following block of code in if condition concurrent
 		if (!existing) {
 			Runnable task = () -> { //TODO Change this to a thread pool
 			    String threadName = Thread.currentThread().getName();
@@ -66,8 +64,6 @@ public class GitZipJavaProjectRepositoryDO implements RepositoryDO {
 		
 					pd.download(repository.getUrl(), repoId);
 	
-					//TODO Handle no originalRepo found and propagate the exception back from here
-					//TODO Change the default status list in swagger enum
 					ep.extract(repoId);
 					pj.renameProjectFile(repository.getUrl(), repoId);
 					
@@ -86,8 +82,7 @@ public class GitZipJavaProjectRepositoryDO implements RepositoryDO {
 					repository.setStatus("completed");
 					log.info("Change reposioty status " + repository);
 				} catch (RuntimeException re) {
-					repositoryDS.remove(id);
-					repository.setStatus("failed");
+					repository.setStatus("failed"); //TODO return the full error detail
 					log.info("Change reposioty status " + repository);
 					throw re;
 				}

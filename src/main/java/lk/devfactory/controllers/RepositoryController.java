@@ -26,7 +26,6 @@ import lk.devfactory.repository.impl.GitZipJavaProjectRepositoryDO;
 import lk.devfactory.store.impl.UUID;
 import lk.devfactory.store.impl.UUIDGenerator;
 
-//TODO : validate input
 @Component
 public class RepositoryController {
 	
@@ -37,7 +36,6 @@ public class RepositoryController {
     @Autowired
     RepositoryDO repository;
 
-    //TODO: Handle 405 invalid input git url
     public ResponseContext addRepo(RequestContext request, RepositoryBase body) {
     	UUID uuid = UUIDGenerator.get();
     	log.info("Id for repo : "+ body + " is "+uuid);
@@ -73,7 +71,6 @@ public class RepositoryController {
                 .entity(repositories);
     }
 
-    //TODO: 400
     public ResponseContext getRepoDeadCodeByID(RequestContext requestContext, String id)
     {
     	log.info("Id of the repo to find is "+ id);
@@ -89,7 +86,6 @@ public class RepositoryController {
                                     .entity(repositoryObj);
     }
     
-  //TODO: Handle 400
     public ResponseContext removeRepo(RequestContext requestContext, String id)
     {
     	log.info("Id of the repo to remove "+" is "+ id);
