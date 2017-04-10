@@ -1,27 +1,27 @@
-## Spring Boot Jersey Inflector Sample
+## Dead code analyser
 
-A simple example demonstrating how to use Swagger Inflector with Spring Boot. This project integrates both Spring Boot Actuator and the Spring Boot Jersey integration. Because Actuator is built upon SpringMVC, [Jersey and Actuator must listen on different endpoints](http://docs.spring.io/spring-boot/docs/current/reference/html/howto-actuator.html#howto-use-actuator-with-jersey). Please see the `applictaion.yaml` for how this is accomplished. 
+Any java project which satisfy the standard java project scaffolding defined by maven could be analysed to identify any dead code available in the project. 
 
 
-The project uses [Gradle](https://gradle.org/) for its build system and you can build the project by running:
+The project uses [Sci Tool Understand](https://scitools.com/) for its code analysis task:
 
-	./gradlew build
 
-You can also run the app using the [Spring Boot Gradle Plugin](http://docs.spring.io/spring-boot/docs/current/reference/html/build-tool-plugins-gradle-plugin.html) like so: 
-
-	./gradlew bootRun
+You can can use four APIs published by this application through(http://localhost:8080/swagger-ui.html) assuming the deployied host and port is localhost:8080.
 
 The swagger definition will be available at the following URI:
 
-[http://localhost:8080/api/v2/swagger.json](http://localhost:8080/api/v2/swagger.json)
+[http://localhost:8080/api/v1/swagger.json](http://localhost:8080/api/v1/swagger.json)
 
-The Spring Boot Actuator endpoints are avilable here:
+Starting using the feature at Docker swam sing following urls:
 
-[http://localhost:8080/info](http://localhost:8080/info)
-[http://localhost:8080/env](http://localhost:8080/env)
+[Swagger UI](http://webserver.devfactory.com:15560/swagger-ui.html)
 
-Have fun!
+[Swagger definition] (http://webserver.devfactory.com:15560/api/v1/swagger.json)
 
-Starting swagger editor
-~/Development>http-server swagger-editor
+or by deploying the package from [github](https://github.com/lahiruk/dead-code-analyzer)
 
+# git https://github.com/lahiruk/dead-code-analyzer.git
+# gradlew clean bootRepackage
+# java -Ddistribution='MacOS' -DtmpPath='/Users/lahiru/tmp' -jar Development/workspace/dead-code-analyzer/build/libs/dead-code-analyzer-1.0.0.jar
+
+At present the software is only certified to work on Linux and MacOS operating system flavors. Specify -Ddistribution='MacOS' for mac and nothing for linux. Specify -DtmpPath if the user.home is not root.
