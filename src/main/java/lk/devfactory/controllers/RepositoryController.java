@@ -43,7 +43,7 @@ public class RepositoryController {
     	repo.setUrl(body.getUrl());
     	try {
     		repo = repository.add(uuid, repo);
-		} catch (RepositoryNotFoundException | IllegalArgumentException e) {
+		} catch (IllegalArgumentException e) {
     		log.info("Unable to find git repository "+body);
     		ApiError error = new ApiError();
     		error.setCode(HttpServletResponse.SC_NOT_FOUND);

@@ -41,7 +41,7 @@ public class SystemProcess {
 			log.info(exec.getEnvironment().get("PATH"));
 			log.info("Output from cmd:" + output);
 			if (!output.startsWith("Files added")) {
-				throw new RuntimeException("Failed execute udb command build project udb for:"+repoId);
+				throw new InvalidExitValueException("Failed execute udb command build project udb for:"+repoId, result);
 			}
 		} catch (InvalidExitValueException | TimeoutException | IOException |InterruptedException e)  {
 			throw new RuntimeException("Failed execute udb command build project udb for:"+repoId, e);

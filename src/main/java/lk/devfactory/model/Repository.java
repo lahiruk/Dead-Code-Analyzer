@@ -31,6 +31,7 @@ public class Repository extends RepositoryBase{
     private OffsetDateTime created = OffsetDateTime.now();
     private OffsetDateTime preparedOn;
     private OffsetDateTime completedOn;
+    private String message;
 
     @JsonProperty
     public OffsetDateTime getCreated() {
@@ -60,6 +61,15 @@ public class Repository extends RepositoryBase{
 	}
 
 	@JsonProperty
+	public String getMessage() {
+      return message;
+    }
+
+    public void setMessage(String message) {
+      this.message = message;
+    }
+
+    @JsonProperty
     public String getId() {
         return id;
     }
