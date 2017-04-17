@@ -64,13 +64,7 @@ public class GitZipJavaProjectRepositoryDO implements RepositoryDO {
 					repository.setStatus("preparing");
 					log.info("Change reposioty status " + repository);
 		
-					pd.download(repository.getUrl(), repoId);
-	
-					ep.extract(repoId);
-					pj.renameProjectFile(repository.getUrl(), repoId);
-					
-					log.info("Change reposioty status " + repository);
-					
+					sp.executeClone(repoId, repository.getUrl());
 					sp.executeUnd(repoId);
 					sp.executeUndAnalyse(repoId);
 					repository.setPreparedOn(OffsetDateTime.now());
@@ -85,7 +79,7 @@ public class GitZipJavaProjectRepositoryDO implements RepositoryDO {
 					log.info("Change reposioty status " + repository);
 				} catch (RuntimeException re) {
 				    updateMessage(re, repository);
-					repository.setStatus("failed"); //TODO return the full error detail
+					repository.setStatus("failed");
 					log.info("Change reposioty status " + repository);
 					throw re;
 				}

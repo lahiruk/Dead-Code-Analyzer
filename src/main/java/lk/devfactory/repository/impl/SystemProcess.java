@@ -27,10 +27,28 @@ public class SystemProcess {
 	private static final String prog = SystemConst.TMP_PATH+ File.separator + SystemConst.DIST + File.separator+"und";
 	//String prog = "/Applications/Understand.app/Contents"+ File.separator + SystemConst.DIST + File.separator+"und";
 
+	   protected void executeClone(String repoId, String url) {
+	        try {
+	            String absPath = SystemConst.TMP_PATH + File.separator + repoId + File.separator;
+	            log.info("Start cloning reposotory id: " + repoId + " to path: "+ absPath);
+	            ProcessExecutor exec = new ProcessExecutor().command("git","clone",url,absPath);
+	            exec.environment("PATH", ".:" + System.getenv("PATH"));
+	            ProcessResult result =  exec.readOutput(true).execute();
+	            String output = result.outputUTF8();
+	            log.info("System PATH >" + exec.getEnvironment().get("PATH"));
+	            log.info("Output from cmd:" + output);
+	            if (!output.startsWith("Cloning into")) {
+	                throw new InvalidExitValueException("Failed execute git command for:"+repoId, result);
+	            }
+	        } catch (InvalidExitValueException | TimeoutException | IOException |InterruptedException e)  {
+	            throw new RuntimeException("Failed execute udb command build project udb for:"+repoId, e);
+	        }
+	    }
+	   
 	protected void executeUnd(String repoId) {
 		try {
 			String absPath = SystemConst.TMP_PATH + File.separator + repoId + File.separator;
-			log.info("Start preparing udb file.. reposotory id: " + repoId + "program path: " + prog
+			log.info("Start preparing udb file.. reposotory id: " + repoId + " program path: " + prog
 					+ "project path: " + absPath);
 			ProcessExecutor exec = new ProcessExecutor().command(prog, "-db",absPath + SystemConst.UDB_PROJECT_NAME
 							,"create", "-languages","Java","add",absPath+SystemConst.SRC_FOLDER,"settings"
@@ -38,7 +56,7 @@ public class SystemProcess {
 			exec.environment("PATH", ".:" + System.getenv("PATH"));
 			ProcessResult result =	exec.readOutput(true).execute();
 			String output = result.outputUTF8();
-			log.info(exec.getEnvironment().get("PATH"));
+			log.info("System PATH >" + exec.getEnvironment().get("PATH"));
 			log.info("Output from cmd:" + output);
 			if (!output.startsWith("Files added")) {
 				throw new InvalidExitValueException("Failed execute udb command build project udb for:"+repoId, result);
