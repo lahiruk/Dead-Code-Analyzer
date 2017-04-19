@@ -17,8 +17,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import lk.devfactory.SystemPropertyTestSupport;
 import lk.devfactory.ds.RepositoryDS;
-import lk.devfactory.models.DeadCode;
-import lk.devfactory.models.Repository;
+import lk.devfactory.model.DeadCode;
+import lk.devfactory.model.Repository;
 //import lk.devfactory.reposiotry.DeadCodeDO;
 import lk.devfactory.repository.RepositoryDO;
 import lk.devfactory.store.impl.UUID;

@@ -9,10 +9,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.zeroturnaround.exec.InvalidExitValueException;
 
 import lk.devfactory.ds.RepositoryDS;
-import lk.devfactory.models.DeadCode;
-import lk.devfactory.models.Repository;
+import lk.devfactory.exception.RepositoryNotFoundException;
+import lk.devfactory.model.DeadCode;
+import lk.devfactory.model.Repository;
 import lk.devfactory.repository.RepositoryDO;
 import lk.devfactory.store.impl.UUID;
 
@@ -62,13 +64,7 @@ public class GitZipJavaProjectRepositoryDO implements RepositoryDO {
 					repository.setStatus("preparing");
 					log.info("Change reposioty status " + repository);
 		
-					pd.download(repository.getUrl(), repoId);
-	
-					ep.extract(repoId);
-					pj.renameProjectFile(repository.getUrl(), repoId);
-					
-					log.info("Change reposioty status " + repository);
-					
+					sp.executeClone(repoId, repository.getUrl());
 					sp.executeUnd(repoId);
 					sp.executeUndAnalyse(repoId);
 					repository.setPreparedOn(OffsetDateTime.now());
@@ -82,7 +78,8 @@ public class GitZipJavaProjectRepositoryDO implements RepositoryDO {
 					repository.setStatus("completed");
 					log.info("Change reposioty status " + repository);
 				} catch (RuntimeException re) {
-					repository.setStatus("failed"); //TODO return the full error detail
+				    updateMessage(re, repository);
+					repository.setStatus("failed");
 					log.info("Change reposioty status " + repository);
 					throw re;
 				}
@@ -97,7 +94,21 @@ public class GitZipJavaProjectRepositoryDO implements RepositoryDO {
 		return repository;
 	}
 
-	@Override
+	private void updateMessage(RuntimeException re, Repository repository) {
+      if (re.getCause() == null) {
+        repository.setMessage("System error please contact administrator.");
+      } else if (re.getCause() instanceof RepositoryNotFoundException) {
+        repository.setMessage("Repository not found at GitHub.");
+      } else if (re.getCause() instanceof InvalidExitValueException) {
+        repository.setMessage("Repository added could not be processed due to limitations in the application."
+            + "The repository should be a java project with standard maven project structure.");
+      } else {
+        repository.setMessage("System error please contact administrator.");
+      }
+    
+    }
+
+    @Override
 	public Stream<Repository> findAll() {
 		return repositoryDS.findAll();
 	}

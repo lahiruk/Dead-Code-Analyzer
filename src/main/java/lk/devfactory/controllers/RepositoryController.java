@@ -19,8 +19,8 @@ import io.swagger.inflector.models.RequestContext;
 import io.swagger.inflector.models.ResponseContext;
 import io.swagger.inflector.utils.ApiException;
 import lk.devfactory.exception.RepositoryNotFoundException;
-import lk.devfactory.models.Repository;
-import lk.devfactory.models.RepositoryBase;
+import lk.devfactory.model.Repository;
+import lk.devfactory.model.RepositoryBase;
 import lk.devfactory.repository.RepositoryDO;
 import lk.devfactory.repository.impl.GitZipJavaProjectRepositoryDO;
 import lk.devfactory.store.impl.UUID;
@@ -43,7 +43,7 @@ public class RepositoryController {
     	repo.setUrl(body.getUrl());
     	try {
     		repo = repository.add(uuid, repo);
-		} catch (RepositoryNotFoundException | IllegalArgumentException e) {
+		} catch (IllegalArgumentException e) {
     		log.info("Unable to find git repository "+body);
     		ApiError error = new ApiError();
     		error.setCode(HttpServletResponse.SC_NOT_FOUND);

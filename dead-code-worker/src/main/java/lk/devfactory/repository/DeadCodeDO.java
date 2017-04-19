@@ -1,4 +1,4 @@
-package lk.devfactory.reposiotry;
+package lk.devfactory.repository;
 
 import java.util.List;
 

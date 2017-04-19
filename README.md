@@ -27,3 +27,18 @@ or by deploying the package from [github](https://github.com/lahiruk/dead-code-a
 ```
 
 At present the software is only certified to work on Linux and MacOS operating system flavors. Specify -Ddistribution='MacOS' for mac and nothing for linux. Specify -DtmpPath if the user.home is not root.
+
+###Build
+> gradlew clean bootRepackage
+
+###Test
+> gradle build or gradle test
+
+###Docker Local
+> gradlew buildDocker
+
+###Docker Manual Push
+> gradlew manualDockerPush
+> export DOCKER_HOST="tcp://build.swarm.devfactory.com"
+> cd Development/workspace/dead-code-analyzer/
+> docker build  -t dead-code-image:latest build/docker
