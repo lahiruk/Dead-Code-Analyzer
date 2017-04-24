@@ -133,6 +133,8 @@ project (':dead-code-worker'){
 	    compile('com.fasterxml.jackson.core:jackson-databind')
 	    compile('com.fasterxml.jackson.datatype:jackson-datatype-jdk8')
 	    compile('com.fasterxml.jackson.datatype:jackson-datatype-jsr310')
+	    compile('com.fasterxml.jackson.datatype:jackson-datatype-joda')
+	    compile('com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider')
 		compile('org.springframework.boot:spring-boot-starter-actuator')
 
 		testCompile('org.springframework.boot:spring-boot-starter-test')
@@ -150,6 +152,8 @@ dependencies {
     compile('com.fasterxml.jackson.core:jackson-databind')
     compile('com.fasterxml.jackson.datatype:jackson-datatype-jdk8')
     compile('com.fasterxml.jackson.datatype:jackson-datatype-jsr310')
+    compile('com.fasterxml.jackson.datatype:jackson-datatype-joda')
+   	compile('com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider')
 	compile('org.springframework.boot:spring-boot-starter-actuator')
 	compile('org.springframework.boot:spring-boot-starter-jersey')
     compile('org.springframework.boot:spring-boot-starter-web')

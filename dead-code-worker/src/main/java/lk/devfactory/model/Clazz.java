@@ -22,13 +22,17 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 
-public class DeadCode extends Entity{
+public class Clazz extends Entity{
 
     private String name;
     
     private List<GlobalVariable> globalVariables;
     
     private List<Function> functions;
+    
+    private List<FunctionParameter> parameters;
+    
+    private List<LocalVariable> variables;
 
     @JsonProperty
     public String getName() {
@@ -38,22 +42,6 @@ public class DeadCode extends Entity{
     public void setName(String name) {
         this.name = name;
     }
-    
-	@Override
-	public int getLineNo() {
-		return 0; //Class does not have a lineNo
-	}
-
-	@Override
-	public int getColumnNo() {
-		return 0;// class does not have a columnNo
-	}
-	
-	public void setLineNo(int lineNo) {
-	}
-	
-	public void setColumnNo(int columnNo) {
-	}
 
     @JsonProperty
 	public List<GlobalVariable> getGlobalVariables() {
@@ -72,17 +60,41 @@ public class DeadCode extends Entity{
 	public void setFunctions(List<Function> functions) {
 		this.functions = functions;
 	}
+	
 
-	public DeadCode() {
-		this.globalVariables = new ArrayList<GlobalVariable>();
-		this.functions = new ArrayList<Function>();
+    @JsonProperty
+    public List<FunctionParameter> getParameters() {
+        return parameters;
     }
 
-	public DeadCode(String name, List<GlobalVariable> globalVariables, List<Function> functions) {
+    public void setParameters(List<FunctionParameter> parameters) {
+        this.parameters = parameters;
+    }
+
+    @JsonProperty
+    public List<LocalVariable> getVariables() {
+        return variables;
+    }
+
+    public void setVariables(List<LocalVariable> variables) {
+        this.variables = variables;
+    }
+
+	public Clazz() {
+		this.globalVariables = new ArrayList<GlobalVariable>();
+		this.functions = new ArrayList<Function>();
+	    this.parameters = new ArrayList<FunctionParameter>();
+	    this.variables = new ArrayList<LocalVariable>();
+    }
+
+	public Clazz(String name, List<GlobalVariable> globalVariables, List<Function> functions, 
+	          List<FunctionParameter> parameters, List<LocalVariable> variables) {
 		super();
 		this.name = name;
 		this.globalVariables = globalVariables;
 		this.functions = functions;
+	    this.parameters = parameters;
+	    this.variables = variables;
 	}
 
 }

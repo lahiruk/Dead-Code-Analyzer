@@ -19,21 +19,32 @@ package lk.devfactory.model;
 import java.time.OffsetDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import io.swagger.annotations.ApiModelProperty;
 
 
 public class Repository extends RepositoryBase{
     private String id;
-    private List<DeadCode> deadCode;
+    private List<Clazz> clazz;
     private String status;
     private OffsetDateTime created = OffsetDateTime.now();
-    private OffsetDateTime preparedOn;
-    private OffsetDateTime completedOn;
-    private String message;
+    private OffsetDateTime preparedToAnalyseAt;
+    private OffsetDateTime completedAt;
+    private String result;
+    private boolean existing = false;
+
+    @JsonIgnore
+    public boolean isExisting() {
+      return existing;
+    }
+
+    public void setExisting(boolean existing) {
+      this.existing = existing;
+    }
 
     @JsonProperty
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     public OffsetDateTime getCreated() {
         return created;
     }
@@ -43,30 +54,32 @@ public class Repository extends RepositoryBase{
     }
 
     @JsonProperty
-    public OffsetDateTime getPreparedOn() {
-		return preparedOn;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
+    public OffsetDateTime getPreparedToAnalyseAt() {
+		return preparedToAnalyseAt;
 	}
 
-	public void setPreparedOn(OffsetDateTime preparedOn) {
-		this.preparedOn = preparedOn;
-	}
-
-	@JsonProperty
-	public OffsetDateTime getCompletedOn() {
-		return completedOn;
-	}
-
-	public void setCompletedOn(OffsetDateTime completedOn) {
-		this.completedOn = completedOn;
+	public void setPreparedToAnalyseAt(OffsetDateTime preparedOn) {
+		this.preparedToAnalyseAt = preparedOn;
 	}
 
 	@JsonProperty
-	public String getMessage() {
-      return message;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
+	public OffsetDateTime getCompletedAt() {
+		return completedAt;
+	}
+
+	public void setCompletedAt(OffsetDateTime completedOn) {
+		this.completedAt = completedOn;
+	}
+
+	@JsonProperty
+	public String getResult() {
+      return result;
     }
 
-    public void setMessage(String message) {
-      this.message = message;
+    public void setResult(String message) {
+      this.result = message;
     }
 
     @JsonProperty
@@ -87,16 +100,16 @@ public class Repository extends RepositoryBase{
         super.setUrl(name);
     }
 
-    public List<DeadCode> getDeadCode() {
-		return deadCode;
+    @JsonProperty
+    public List<Clazz> getClasses() {
+		return clazz;
 	}
 
-	public void setDeadCode(List<DeadCode> deadCode) {
-		this.deadCode = deadCode;
+	public void setClasses(List<Clazz> clazz) {
+		this.clazz = clazz;
 	}
 
-	@JsonProperty("status")
-    @ApiModelProperty(value = "Repository status in the store", allowableValues = "pending,preparing,analysing,completed,failed")
+	@JsonProperty
     public String getStatus() {
         return status;
     }

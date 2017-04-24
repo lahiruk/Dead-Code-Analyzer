@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.junit.Before;
 import org.junit.FixMethodOrder;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
@@ -61,6 +62,7 @@ public class RepositoryTest extends SystemPropertyTestSupport {
 	}
 
 	@Test
+	@Ignore
     public void addRepositorySuccessfullPath() {	
 		RepositoryBase repositoryBase = new RepositoryBase();
     	repositoryBase.setUrl("https://github.com/lahiruk/exam-conductor");
@@ -84,6 +86,7 @@ public class RepositoryTest extends SystemPropertyTestSupport {
     }
     
     @Test
+    @Ignore
     public void findAllRepos() {	
         //Find all repos
         List<Repository> repos = null;
@@ -98,6 +101,7 @@ public class RepositoryTest extends SystemPropertyTestSupport {
     }
     
     @Test
+    @Ignore
     public void findSingleRepo() {	
         //Find single repo
         Repository repoFound = null;
@@ -113,6 +117,7 @@ public class RepositoryTest extends SystemPropertyTestSupport {
     }
     
     @Test
+    @Ignore
     public void removeRepo() {
         //Remove repo
         try {

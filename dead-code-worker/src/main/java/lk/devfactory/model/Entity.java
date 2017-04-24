@@ -3,8 +3,6 @@ package lk.devfactory.model;
 public abstract  class Entity {
 	
 	public abstract String getName();
-	public abstract int getLineNo();
-	public abstract int getColumnNo();
 
 	@Override
 	public String toString() {

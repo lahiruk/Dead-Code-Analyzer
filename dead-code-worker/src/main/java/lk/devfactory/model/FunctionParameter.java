@@ -2,7 +2,7 @@ package lk.devfactory.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class FunctionParameter extends Entity{
+public class FunctionParameter extends Entity implements EntityLocation{
 	
 	String name;
 	

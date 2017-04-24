@@ -11,6 +11,7 @@ RUN apt-get install oracle-java8-set-default
 RUN apt-get -y install libxtst6
 RUN apt-get -y install libxrender1
 RUN apt-get -y install libxi6
+RUN apt-get -y install git
 
 #Install aws cli
 RUN apt-get install awscli -y

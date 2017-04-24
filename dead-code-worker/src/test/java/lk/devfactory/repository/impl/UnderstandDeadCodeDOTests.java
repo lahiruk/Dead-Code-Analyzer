@@ -16,7 +16,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import lk.devfactory.SystemPropertyTestSupport;
-import lk.devfactory.model.DeadCode;
+import lk.devfactory.model.Clazz;
 import lk.devfactory.model.Function;
 import lk.devfactory.model.FunctionParameter;
 import lk.devfactory.model.GlobalVariable;
@@ -29,20 +29,20 @@ public class UnderstandDeadCodeDOTests extends SystemPropertyTestSupport {
 
 	Repository repository;
 	UUID uuid;
-	List<DeadCode> deadCodeList;
+	List<Clazz> deadCodeList;
 
 	@Autowired
 	DeadCodeDO deadCodeDO; // SUT
 
 	@Before
 	public void before() {
-		deadCodeList = new ArrayList<DeadCode>();
+		deadCodeList = new ArrayList<Clazz>();
 	}
 
 	@Test
 	public void analysis() {
-		deadCodeList = deadCodeDO.analyse("ead82e91-846a-4f65-95ce-e480639a5838");
-		// TODO add asserts
+		deadCodeList = deadCodeDO.analyse("ead82e91-846a-4f65-95ce-e480639a5838");//Analysing the und file in resources.
+		
 		deadCodeList.forEach(dead -> {
 			//System.out.println("Dead code:");
 			//System.out.println(dead);
@@ -64,11 +64,11 @@ public class UnderstandDeadCodeDOTests extends SystemPropertyTestSupport {
 			});
 
 			List<Function> expFun = new ArrayList<Function>();
-			expFun.add(new Function("Application.main", 0, 0, null, null));
-			expFun.add(new Function("Application.unusedFunction", 0, 0, null, null));
-			expFun.add(new Function("Application.usedFunction", 0, 0, null, null));
-			expFun.add(new Function("Application.protectedFunction", 0, 0, null, null));
-			expFun.add(new Function("Application.returnFunction", 0, 0, null, null));
+			expFun.add(new Function("Application.main", 0, 0));
+			expFun.add(new Function("Application.unusedFunction", 0, 0));
+			expFun.add(new Function("Application.usedFunction", 0, 0));
+			expFun.add(new Function("Application.protectedFunction", 0, 0));
+			expFun.add(new Function("Application.returnFunction", 0, 0));
 
 			assertEquals(new HashSet<Function>(expFun), new HashSet<Function>(dead.getFunctions()));
 
@@ -79,49 +79,20 @@ public class UnderstandDeadCodeDOTests extends SystemPropertyTestSupport {
 					assertTrue("lineNo not greater than 0 for "+fun, fun.getLineNo() > 0);
 					assertTrue("columnNonot greater than 0 for "+fun, fun.getColumnNo() > 0);
 				}
-
-				//System.out.println("Function Parameter:");
-				//System.out.println(fun.getParameters());
-				//System.out.println("Local var:");
-				//System.out.println(fun.getVariables());
-
-				if ("Application.unusedFunction".equals(fun.toString())) {
-					List<FunctionParameter> expFunParam = new ArrayList<FunctionParameter>();
-					expFunParam.add(new FunctionParameter("unusedParam", 0, 0));
-					assertEquals(new HashSet<FunctionParameter>(expFunParam),
-							new HashSet<FunctionParameter>(fun.getParameters()));
-
-					fun.getParameters().forEach(param -> {
-						//System.out.println(param + "[" + param.getLineNo() + "," + param.getColumnNo() + "]");
-						
-						assertTrue("lineNo not greater than 0 for "+param, param.getLineNo() > 0);
-						assertTrue("columnNonot greater than 0 for "+param, param.getColumnNo() > 0);
-					});
-
-					List<LocalVariable> expFunVar = new ArrayList<LocalVariable>();
-					expFunVar.add(new LocalVariable("unusedVariable", 0, 0));
-					assertEquals(new HashSet<LocalVariable>(expFunVar), new HashSet<LocalVariable>(fun.getVariables()));
-
-					fun.getVariables().forEach(var -> {
-						//System.out.println(var + "[" + var.getLineNo() + "," + var.getColumnNo() + "]");
-						
-						assertTrue("lineNo not greater than 0 for "+var, var.getLineNo() > 0);
-						assertTrue("columnNonot greater than 0 for "+var, var.getColumnNo() > 0);
-					});
-				} else if ("Application.usedFunction".equals(fun.toString())) { 
-					fun.getParameters().forEach(param -> {
-						//System.out.println(param + "[" + param.getLineNo() + "," + param.getColumnNo() + "]");
-						
-						assertTrue("lineNo not greater than 0 for "+param, param.getLineNo() > 0);
-						assertTrue("columnNonot greater than 0 for "+param, param.getColumnNo() > 0);
-					});
-				} else {
-					assertTrue("The function " + fun.getName() + " should not have any parameters but has "
-							+ fun.getParameters().size(), fun.getParameters().size() == 0);
-					assertTrue("The function " + fun.getName() + " should not have any local variables but has "
-							+ fun.getVariables().size(), fun.getVariables().size() == 0);
-				}
 			});
+            
+			dead.getParameters().forEach(param -> {
+                //System.out.println(param + "[" + param.getLineNo() + "," + param.getColumnNo() + "]");
+                assertTrue("lineNo not greater than 0 for "+param, param.getLineNo() > 0);
+                assertTrue("columnNonot greater than 0 for "+param, param.getColumnNo() > 0);
+  
+			});
+
+            dead.getVariables().forEach(var -> {
+                //System.out.println(var + "[" + var.getLineNo() + "," + var.getColumnNo() + "]");
+                assertTrue("lineNo not greater than 0 for "+var, var.getLineNo() > 0);
+                assertTrue("columnNonot greater than 0 for "+var, var.getColumnNo() > 0);
+            });
 		});
 	}
 }

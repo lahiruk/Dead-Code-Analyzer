@@ -7,8 +7,9 @@ spring:
   jersey:
     application-path: /api
   jackson:
-    date-format: com.fasterxml.jackson.databind.util.ISO8601DateFormat
-    default-property-inclusion: NON_ABSENT
+    property-naming-strategy: SNAKE_CASE
+    joda-date-time-format: yyyy-MM-dd'T'HH:mm:ss.SSS
+    default-property-inclusion: NON_NULL
     serialization:
-      WRITE_DATES_AS_TIMESTAMPS: false
-      INDENT_OUTPUT: true
+        WRITE_DATES_AS_TIMESTAMPS: false
+        INDENT_OUTPUT: false

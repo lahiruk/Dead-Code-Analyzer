@@ -1,21 +1,14 @@
 package lk.devfactory.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Function extends Entity{
+public class Function extends Entity implements EntityLocation {
 	
 	String name;
 	
 	int lineNo;
 	
 	int columnNo;
-	
-	List<FunctionParameter> parameters;
-	
-	List<LocalVariable> variables;
 
     @JsonProperty
 	public String getName() {
@@ -44,36 +37,14 @@ public class Function extends Entity{
 		this.columnNo = columnNo;
 	}
 
-    @JsonProperty
-	public List<FunctionParameter> getParameters() {
-		return parameters;
-	}
-
-	public void setParameters(List<FunctionParameter> parameters) {
-		this.parameters = parameters;
-	}
-
-    @JsonProperty
-	public List<LocalVariable> getVariables() {
-		return variables;
-	}
-
-	public void setVariables(List<LocalVariable> variables) {
-		this.variables = variables;
-	}
-
 	public Function() {
-		this.parameters = new ArrayList<FunctionParameter>();
-		this.variables = new ArrayList<LocalVariable>();
-	}
-
-	public Function(String name, int lineNo, int columnNo, List<FunctionParameter> parameters, List<LocalVariable> variables) {
+    }
+	
+	public Function(String name, int lineNo, int columnNo) {
 		super();
 		this.name = name;
 		this.lineNo = lineNo;
 		this.columnNo = columnNo;
-		this.parameters = parameters;
-		this.variables = variables;
 	}
 
 }

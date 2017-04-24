@@ -10,6 +10,7 @@ info:
     name: Apache 2.0
     url: "http://www.apache.org/licenses/LICENSE-2.0.html"
 host: "webserver.devfactory.com:15560"
+#host: "localhost:8080"
 basePath: /v1
 tags:
   - name: repository
@@ -41,10 +42,20 @@ paths:
           description: Successful operation
           schema:
             $ref: "#/definitions/Repository"
+        "409":
+          description: Repository exists. Delete the current repository (id provided in response) to add a new version of the repository.
+          schema:
+            $ref: "#/definitions/Repository"
         "400":
           description: Bad request
+          schema:
+            $ref: "#/definitions/ErrorResponse"
         "405":
           description: Invalid input
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      security:
+        - api_key: 123
   /repository/all:
     get:
       tags:
@@ -64,8 +75,12 @@ paths:
               $ref: "#/definitions/Repository"
         "400":
           description: Bad request
+          schema:
+            $ref: "#/definitions/ErrorResponse"
         "404":
           description: Repositories not found
+          schema:
+            $ref: "#/definitions/ErrorResponse"
   "/repository/{repositoryId}":
     get:
       tags:
@@ -91,8 +106,12 @@ paths:
             $ref: "#/definitions/Repository"
         "400":
           description: Bad request
+          schema:
+            $ref: "#/definitions/ErrorResponse"
         "404":
           description: Repository not found
+          schema:
+            $ref: "#/definitions/ErrorResponse"
     delete:
       tags:
         - repository
@@ -115,10 +134,20 @@ paths:
           description: No content
         "400":
           description: Bad request
+          schema:
+            $ref: "#/definitions/ErrorResponse"
         "404":
           description: Repository not found
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+securityDefinitions:
+  api_key:
+    type: apiKey
+    name: api_key
+    in: header
 definitions:
   RepositoryBase:
+    x-swagger-router-model: lk.devfactory.model.RepositoryBase
     required:
       - url
     properties:
@@ -126,21 +155,24 @@ definitions:
         type: string
         example: https://github.com/owner/project
   Repository:
+    x-swagger-router-model: lk.devfactory.model.Repository
     required:
       - url
     properties:
       id:
         type: string
-      deadCode:
+        example: e23406df-f980-4ad0-8193-ea61484c5532
+      classes:
         type: array
         items:
-          $ref: "#/definitions/DeadCode"
+          $ref: "#/definitions/Clazz"
       url:
         type: string
         example: https://github.com/owner/project
       status:
         type: string
         description: Repository status
+        example: completed
         enum:
           - pending
           - preparing
@@ -150,19 +182,18 @@ definitions:
       created:
         type: string
         format: date-time
-      preparedOn:
+      preparedToAnalyseAt:
         type: string
         format: date-time
-      completedOn:
+      completedAt:
         type: string
         format: date-time
-  DeadCode:
+  Clazz:
+    x-swagger-router-model: lk.devfactory.model.Clazz
     properties:
-      id:
-        type: integer
-        format: int64
       name:
         type: string
+        example: org.apache.commons.io.StringUtils
       globalVariables:
         type: array
         items:
@@ -170,55 +201,81 @@ definitions:
       functions:
         type: array
         items:
-          $ref: "#/definitions/Function"           
-  GlobalVariable:
-    properties:
-      name:
-        type: string
-      lineNo:
-        type: integer
-        format: int64         
-      columnNo:
-        type: integer
-        format: int64     
-  Function:
-    properties:
-      name:
-        type: string
-      lineNo:
-        type: integer
-        format: int64         
-      columnNo:
-        type: integer
-        format: int64      
+          $ref: "#/definitions/Function"      
       parameters:
         type: array
+        description: Function parameters
         items:
           $ref: "#/definitions/FunctionParameter"     
       variables:
         type: array
+        description: Function local variables
         items:
-          $ref: "#/definitions/LocalVariable"            
+          $ref: "#/definitions/LocalVariable"       
+  GlobalVariable:
+    x-swagger-router-model: lk.devfactory.model.GlobalVariable
+    properties:
+      name:
+        type: string
+        example: org.apache.commons.io.StringUtils.isEmpty
+      lineNo:
+        type: integer
+        format: int64 
+        example: 5        
+      columnNo:
+        type: integer
+        format: int64    
+        example: 5 
+  Function:
+    x-swagger-router-model: lk.devfactory.model.Function
+    properties:
+      name:
+        type: string
+        example: org.apache.commons.io.StringUtils.compare
+      lineNo:
+        type: integer
+        format: int64        
+        example: 10
+      columnNo:
+        type: integer
+        format: int64        
+        example: 20       
   FunctionParameter:
+    x-swagger-router-model: lk.devfactory.model.FunctionParameter
     properties:
       name:
         type: string
+        example: org.apache.commons.io.StringUtils.compare.nullIsLess
       lineNo:
         type: integer
-        format: int64         
+        format: int64       
+        example: 10 
       columnNo:
         type: integer
-        format: int64                  
+        format: int64     
+        example: 30             
   LocalVariable:
+    x-swagger-router-model: lk.devfactory.model.LocalVariable
     properties:
       name:
         type: string
+        example: org.apache.commons.io.StringUtils.empty
       lineNo:
         type: integer
-        format: int64         
+        format: int64 
+        example: 12       
       columnNo:
         type: integer
-        format: int64                  
+        format: int64
+        example: 4
+  ErrorResponse:
+    properties:
+      code:
+        type: string
+        example: http status code
+      message:
+        type: string  
+        example: error message                
 externalDocs:
   description: Find out more about SciTool
   url: "https://scitools.com/"

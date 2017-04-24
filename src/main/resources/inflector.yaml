@@ -1,12 +1,13 @@
+environment: production
 controllerPackage: lk.devfactory.controllers
-modelPackage: lk.devfactory.model
+#modelPackage: lk.devfactory.model
 swaggerUrl: swagger.yaml
 exceptionMappers: ['io.swagger.inflector.utils.DefaultExceptionMapper']
 inputValidators: ['io.swagger.inflector.validators.DefaultValidator']
 #validatePayloads: true
 rootPath: '/api'
-modelMappings:
-  Repository: lk.devfactory.model.Repository
+#modelMappings:
+  #Repository: lk.devfactory.model.Repository
 # loads all by default, or pick and choose
 entityProcessors:
   - json

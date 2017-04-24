@@ -18,7 +18,6 @@ import io.swagger.inflector.models.ApiError;
 import io.swagger.inflector.models.RequestContext;
 import io.swagger.inflector.models.ResponseContext;
 import io.swagger.inflector.utils.ApiException;
-import lk.devfactory.exception.RepositoryNotFoundException;
 import lk.devfactory.model.Repository;
 import lk.devfactory.model.RepositoryBase;
 import lk.devfactory.repository.RepositoryDO;
@@ -50,10 +49,18 @@ public class RepositoryController {
     		error.setMessage("Unable to find git repository");
     		throw new ApiException(error);
 		}
-    	log.info("Repository added for : "+ body + " and uuid is " + uuid);
-        return new ResponseContext()
-                .status(Status.CREATED)
-                .entity(repo);
+    	
+    	if (!repo.isExisting()) {
+        	log.info("Repository added for : "+ body + " and uuid is " + uuid);
+            return new ResponseContext()
+                    .status(Status.CREATED)
+                    .entity(repo);
+    	} else {
+            log.info("Repository already existing for : "+ body + " and uuid is " + uuid);
+            return new ResponseContext()
+                    .status(Status.CONFLICT)
+                    .entity(repo);  	  
+    	}
     }
     
     public ResponseContext findRepositories(RequestContext request) {

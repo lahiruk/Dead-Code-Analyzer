@@ -2,8 +2,8 @@ package lk.devfactory.repository;
 
 import java.util.List;
 
-import lk.devfactory.model.DeadCode;
+import lk.devfactory.model.Clazz; 
 
 public interface DeadCodeDO {
-	public List<DeadCode> analyse(String repoId);
+	public List<Clazz> analyse(String repoId);
 }

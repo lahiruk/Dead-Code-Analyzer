@@ -15,7 +15,7 @@ import org.zeroturnaround.exec.stream.slf4j.Slf4jStream;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import lk.devfactory.model.DeadCode;
+import lk.devfactory.model.Clazz;
 import lk.devfactory.utility.SystemConst;
 
 //TODO: Add javadocs.
@@ -49,7 +49,7 @@ public class SystemProcess {
 		try {
 			String absPath = SystemConst.TMP_PATH + File.separator + repoId + File.separator;
 			log.info("Start preparing udb file.. reposotory id: " + repoId + " program path: " + prog
-					+ "project path: " + absPath);
+					+ " project path: " + absPath);
 			ProcessExecutor exec = new ProcessExecutor().command(prog, "-db",absPath + SystemConst.UDB_PROJECT_NAME
 							,"create", "-languages","Java","add",absPath+SystemConst.SRC_FOLDER,"settings"
 							,"-javaVersion","Java8");
@@ -58,7 +58,7 @@ public class SystemProcess {
 			String output = result.outputUTF8();
 			log.info("System PATH >" + exec.getEnvironment().get("PATH"));
 			log.info("Output from cmd:" + output);
-			if (!output.startsWith("Files added")) {
+			if (!output.startsWith("Files added") || output.startsWith("Files added: 0")) {
 				throw new InvalidExitValueException("Failed execute udb command build project udb for:"+repoId, result);
 			}
 		} catch (InvalidExitValueException | TimeoutException | IOException |InterruptedException e)  {
@@ -81,7 +81,7 @@ public class SystemProcess {
 		}
 	}
 
-	protected List<DeadCode> executeDeeadCodeJar(String repoId) {
+	protected List<Clazz> executeDeeadCodeJar(String repoId) {
 		try {
 			log.info("Start executing dead code analyser jar .." + repoId);
 			ProcessExecutor exec = new ProcessExecutor().command("java","-Xmx2g","-Ddistribution="+SystemConst.DIST,
@@ -91,10 +91,10 @@ public class SystemProcess {
 			exec.redirectOutput(Slf4jStream.ofCaller().asInfo()).execute();
 
 			ObjectMapper mapper = new ObjectMapper();
-			List<DeadCode> deadCodeList =
+			List<Clazz> deadCodeList =
 					mapper.readValue(new File(SystemConst.TMP_PATH + File.separator + repoId + File.separator
 							+ "deadcode-analysis-output.json"),
-					mapper.getTypeFactory().constructCollectionType(List.class, DeadCode.class));
+					mapper.getTypeFactory().constructCollectionType(List.class, Clazz.class));
 			return deadCodeList;
 		} catch (InvalidExitValueException | TimeoutException | IOException |InterruptedException e)  {
 			throw new RuntimeException("Failed analyse deadcode / parse Json for:"+repoId, e);

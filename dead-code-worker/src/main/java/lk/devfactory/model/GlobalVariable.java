@@ -2,7 +2,7 @@ package lk.devfactory.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class GlobalVariable extends Entity{
+public class GlobalVariable extends Entity implements EntityLocation{
 	
 	@JsonProperty
 	String name;

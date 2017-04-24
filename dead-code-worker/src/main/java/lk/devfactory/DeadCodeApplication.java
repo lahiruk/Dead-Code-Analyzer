@@ -12,7 +12,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import lk.devfactory.model.DeadCode;
+import lk.devfactory.model.Clazz;
 import lk.devfactory.repository.DeadCodeDO;
 import lk.devfactory.repository.impl.UnderstandDeadCodeDO;
 import lk.devfactory.utility.SystemConst;
@@ -28,7 +28,7 @@ public class DeadCodeApplication {
 		log.info("Received request to analyse dead code:" + repoId);
 		ConfigurableApplicationContext context = SpringApplication.run(DeadCodeApplication.class, args);
 		DeadCodeDO dc = context.getBean(UnderstandDeadCodeDO.class);
-		List<DeadCode> deadCodeList = dc.analyse(repoId);
+		List<Clazz> deadCodeList = dc.analyse(repoId);
 		
 		ObjectMapper mapper = new ObjectMapper();
 		try {

@@ -13,12 +13,12 @@ import org.zeroturnaround.exec.InvalidExitValueException;
 
 import lk.devfactory.ds.RepositoryDS;
 import lk.devfactory.exception.RepositoryNotFoundException;
-import lk.devfactory.model.DeadCode;
+import lk.devfactory.model.Clazz;
 import lk.devfactory.model.Repository;
 import lk.devfactory.repository.RepositoryDO;
 import lk.devfactory.store.impl.UUID;
 
-//TODO Add javadocs.Fix the exception throwing.
+//TODO Add javadocs.
 @org.springframework.stereotype.Repository
 public class GitZipJavaProjectRepositoryDO implements RepositoryDO {
 	
@@ -67,15 +67,16 @@ public class GitZipJavaProjectRepositoryDO implements RepositoryDO {
 					sp.executeClone(repoId, repository.getUrl());
 					sp.executeUnd(repoId);
 					sp.executeUndAnalyse(repoId);
-					repository.setPreparedOn(OffsetDateTime.now());
+					repository.setPreparedToAnalyseAt(OffsetDateTime.now());
 					
 					repository.setStatus("analysing");
-					List<DeadCode> deadCodeList =sp.executeDeeadCodeJar(repoId);
+					List<Clazz> deadCodeList =sp.executeDeeadCodeJar(repoId);
 		
-					repository.setDeadCode(deadCodeList);
+					repository.setClasses(deadCodeList);
 					repositoryDS.update(id, repository);
-					repository.setCompletedOn(OffsetDateTime.now());
+					repository.setCompletedAt(OffsetDateTime.now());
 					repository.setStatus("completed");
+					repository.setResult("Successful..");
 					log.info("Change reposioty status " + repository);
 				} catch (RuntimeException re) {
 				    updateMessage(re, repository);
@@ -89,21 +90,23 @@ public class GitZipJavaProjectRepositoryDO implements RepositoryDO {
 			thread.start();
 			log.debug("Started thread for repository "+repository);
 		} else {
-			return repositoryDS.findByNonIdUniqueKey(repository.getUrl());
+		    Repository existingRepo = repositoryDS.findByNonIdUniqueKey(repository.getUrl());
+		    existingRepo.setExisting(true);
+			return existingRepo;
 		}
 		return repository;
 	}
 
 	private void updateMessage(RuntimeException re, Repository repository) {
       if (re.getCause() == null) {
-        repository.setMessage("System error please contact administrator.");
+        repository.setResult("System error please contact administrator.");
       } else if (re.getCause() instanceof RepositoryNotFoundException) {
-        repository.setMessage("Repository not found at GitHub.");
+        repository.setResult("Repository not found at GitHub.");
       } else if (re.getCause() instanceof InvalidExitValueException) {
-        repository.setMessage("Repository added could not be processed due to limitations in the application."
+        repository.setResult("Repository added could not be processed due to limitations in the application."
             + "The repository should be a java project with standard maven project structure.");
       } else {
-        repository.setMessage("System error please contact administrator.");
+        repository.setResult("System error please contact administrator.");
       }
     
     }

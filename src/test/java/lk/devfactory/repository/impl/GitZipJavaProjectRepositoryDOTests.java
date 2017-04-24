@@ -17,7 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import lk.devfactory.SystemPropertyTestSupport;
 import lk.devfactory.ds.RepositoryDS;
-import lk.devfactory.model.DeadCode;
+import lk.devfactory.model.Clazz;
 import lk.devfactory.model.Repository;
 //import lk.devfactory.reposiotry.DeadCodeDO;
 import lk.devfactory.repository.RepositoryDO;
@@ -30,7 +30,7 @@ public class GitZipJavaProjectRepositoryDOTests extends SystemPropertyTestSuppor
 	
 	Repository originalRepo;
 	UUID uuid;
-	List<DeadCode> deadCodeList;
+	List<Clazz> deadCodeList;
 	
 	@Autowired
 	RepositoryDO reposiotryDO;
@@ -55,7 +55,7 @@ public class GitZipJavaProjectRepositoryDOTests extends SystemPropertyTestSuppor
 		originalRepo = new Repository();
         originalRepo.setUrl("https://github.com/lahiruk/exam-conductor");
         uuid = UUIDGenerator.get();
-        deadCodeList = new ArrayList<DeadCode>();
+        deadCodeList = new ArrayList<Clazz>();
 	}
 
 	@Test
