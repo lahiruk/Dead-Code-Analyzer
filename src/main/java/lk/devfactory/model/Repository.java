@@ -44,7 +44,7 @@ public class Repository extends RepositoryBase{
     }
 
     @JsonProperty
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
     public OffsetDateTime getCreated() {
         return created;
     }
@@ -54,7 +54,7 @@ public class Repository extends RepositoryBase{
     }
 
     @JsonProperty
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
     public OffsetDateTime getPreparedToAnalyseAt() {
 		return preparedToAnalyseAt;
 	}
@@ -64,7 +64,7 @@ public class Repository extends RepositoryBase{
 	}
 
 	@JsonProperty
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
 	public OffsetDateTime getCompletedAt() {
 		return completedAt;
 	}
